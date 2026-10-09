@@ -227,7 +227,6 @@
     .template-art { height: 64px; }
     .footer-note { font-size: 9px; }
   }
-
   /* MỘT CUỘN — CINEMATIC EDITORIAL EDITION */
   :root {
     color-scheme: dark;
@@ -682,7 +681,634 @@
     *, *:before, *:after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     .motion-ready [data-reveal] { opacity: 1; transform: none; }
   }
+  /* LIFE FILM — a story-led landing page, not a recolored dashboard */
+  .hero {
+    min-height: min(760px, calc(100svh - 145px));
+    grid-template-columns: minmax(0,.92fr) minmax(360px,1.08fr);
+    align-items: center;
+    gap: clamp(25px,4.2vw,68px);
+    margin-bottom: clamp(48px,7vw,96px);
+  }
+  .hero-art { display: none !important; }
+  .hero-copy { position: relative; z-index: 3; padding: 25px 0; }
+  .hero-overline { margin-bottom: clamp(25px,4vw,48px); color: #819290; font-size: 8px; letter-spacing: 1.5px; }
+  .hero-overline span:last-child { color: var(--accent); }
+  .hero-copy .kicker { font-size: 9px; letter-spacing: 2.6px; }
+  h1 {
+    font-size: clamp(51px,5.25vw,78px);
+    line-height: .94;
+    letter-spacing: -.075em;
+    margin: 24px 0 25px;
+    max-width: 570px;
+  }
+  h1 em { font-style: italic; }
+  .hero-copy p { font-size: 12px; line-height: 1.95; max-width: 425px; color: #a7b1ad; margin-bottom: 29px; }
+  .hero-buttons { align-items: stretch; gap: 10px; }
+  .hero-buttons .btn { min-height: 46px; }
+  .hero-buttons .btn.primary { max-width: 260px; line-height: 1.45; padding: 9px 16px; }
+  .life-film-board {
+    --light-x: 70%;
+    --light-y: 20%;
+    position: relative;
+    min-width: 0;
+    padding: clamp(14px,2.1vw,25px);
+    border: 1px solid rgba(195,255,173,.19);
+    border-radius: 3px;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(ellipse at var(--light-x) var(--light-y),rgba(195,255,173,.13),transparent 37%),
+      linear-gradient(145deg,#152121 0%,#0b1113 58%,#182622 100%);
+    box-shadow: 0 32px 90px rgba(0,0,0,.35),inset 0 0 75px rgba(195,255,173,.025);
+  }
+  .life-film-board:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 84%;
+    aspect-ratio: 1;
+    right: -18%;
+    top: 10%;
+    border: 1px solid rgba(195,255,173,.15);
+    border-radius: 50%;
+    box-shadow: 0 0 0 21px rgba(195,255,173,.018),0 0 0 57px rgba(195,255,173,.015);
+    pointer-events: none;
+  }
+  .film-board-top,.film-board-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #95a6a1;
+    font: 8px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing: 1.35px;
+  }
+  .film-board-top span:last-child { color: var(--accent); }
+  .film-negative {
+    min-height: 480px;
+    position: relative;
+    margin: 17px 0 15px;
+    overflow: hidden;
+    background: linear-gradient(145deg,rgba(204,230,199,.07),rgba(3,7,8,.8));
+    border: 1px solid rgba(221,241,221,.1);
+  }
+  .film-negative:before {
+    content: "";
+    position: absolute;
+    inset: 28px 15px;
+    border: 1px solid rgba(195,255,173,.08);
+    pointer-events: none;
+  }
+  .film-perforations {
+    position: absolute;
+    z-index: 7;
+    top: 8px;
+    left: 13px;
+    right: 13px;
+    height: 12px;
+    background: radial-gradient(ellipse at center,rgba(202,224,197,.7) 0 3px,transparent 3.6px) 0 0/24px 12px repeat-x;
+    opacity: .75;
+    pointer-events: none;
+  }
+  .film-perforations.bottom { top: auto; bottom: 8px; }
+  .film-main-frame,.film-float-frame {
+    position: absolute;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    text-align: left;
+    background: #17201e;
+    border: 7px solid #d1d4bf;
+    border-radius: 1px;
+    box-shadow: 0 20px 55px rgba(0,0,0,.46);
+    cursor: pointer;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
+  }
+  .film-main-frame { z-index: 2; left: 10%; top: 10%; width: 69%; height: 77%; transform: rotate(-3.5deg); }
+  .film-float-frame { z-index: 4; right: 4%; bottom: 13%; width: 49%; height: 42%; transform: rotate(5deg); border-width: 6px; border-color: #e2dfca; }
+  .film-main-frame:hover { transform: rotate(-1deg) translateY(-4px); box-shadow: 0 28px 62px rgba(0,0,0,.52); }
+  .film-float-frame:hover { transform: rotate(2deg) translateY(-5px); }
+  .film-main-frame img,.film-float-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.86) contrast(1.04); }
+  .film-main-frame:after,.film-float-frame:after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(4,10,9,0) 35%,rgba(4,10,9,.82) 100%); pointer-events:none; }
+  .film-frame-copy { position:absolute; z-index:2; left:13px; right:10px; bottom:13px; color:#f7f3e7; display:grid; gap:4px; }
+  .film-frame-copy small { color:var(--accent); font:7px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:1.2px; }
+  .film-frame-copy strong { font:clamp(18px,2vw,27px)/1.03 Georgia,serif; font-weight:400; }
+  .film-frame-copy>span { color:rgba(247,243,231,.75); font:7px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.65px; }
+  .film-float-frame .film-frame-copy { left:9px; bottom:9px; }
+  .film-float-frame .film-frame-copy strong { font-size:clamp(13px,1.35vw,18px); }
+  .film-float-frame .film-frame-copy small,.film-float-frame .film-frame-copy>span { font-size:6px; }
+  .film-vertical-note {
+    position: absolute;
+    z-index: 1;
+    right: 8px;
+    top: 36px;
+    writing-mode: vertical-rl;
+    color: rgba(195,255,173,.7);
+    font: 7px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing: 1.4px;
+  }
+  .film-frame-number { position:absolute; z-index:8; left:17px; bottom:10px; color:#8e9a91; font:7px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:1.5px; }
+  .film-board-foot { color:#9aa9a3; font-size:7px; letter-spacing:.95px; }
+  .film-board-foot span:last-child { color:var(--accent); text-align:right; }
+  .film-progress { height:2px; margin-top:14px; background:rgba(195,255,173,.13); overflow:hidden; }
+  .film-progress span { display:block; height:100%; width:41%; background:var(--accent); box-shadow:0 0 14px rgba(195,255,173,.55); }
+  .stats { margin-bottom: clamp(45px,6vw,83px); }
+  .stat strong { font-size: clamp(28px,3vw,38px); }
+  .stat small { max-width: 150px; }
+  .manifesto-row { margin-bottom: clamp(47px,7vw,92px); }
+  .manifesto-copy { max-width: 930px; }
+  .chapter-section { margin-bottom: clamp(52px,7.5vw,104px); }
+  .chapter-heading {
+    display:grid;
+    grid-template-columns:minmax(0,1.1fr) minmax(220px,.9fr);
+    align-items:end;
+    gap:30px;
+    margin-bottom:25px;
+  }
+  .chapter-heading .kicker { margin-bottom:15px; }
+  .chapter-heading h2 { margin:0; font:400 clamp(42px,5.4vw,74px)/.96 Georgia,serif; letter-spacing:-.065em; }
+  .chapter-heading h2 em { color:var(--accent); font-weight:400; }
+  .chapter-heading>p { margin:0 0 4px; color:#9aa8a3; max-width:370px; font-size:11px; line-height:1.95; }
+  .chapter-cards { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; }
+  .chapter-card {
+    position:relative;
+    isolation:isolate;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    min-height:252px;
+    padding:17px 15px 15px;
+    overflow:hidden;
+    text-align:left;
+    color:#f2f1e8;
+    background:linear-gradient(155deg,#23312d,#101718 75%);
+    border:1px solid rgba(204,232,209,.13);
+    border-radius:2px;
+    transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;
+  }
+  .chapter-card:before {
+    position:absolute;
+    z-index:-1;
+    right:10px;
+    top:27px;
+    color:rgba(195,255,173,.12);
+    font:italic 76px/1 Georgia,serif;
+    transition:transform .45s,color .3s;
+  }
+  .chapter-card:after { content:""; position:absolute; z-index:-1; width:170px; height:170px; right:-88px; bottom:4px; border:1px solid rgba(195,255,173,.12); border-radius:50%; box-shadow:0 0 0 16px rgba(195,255,173,.02),0 0 0 35px rgba(195,255,173,.018); }
+  .chapter-people:before { content:"♡"; }
+  .chapter-places:before { content:"↗"; }
+  .chapter-days:before { content:"☼"; }
+  .chapter-becoming:before { content:"∞"; }
+  .chapter-people { background:linear-gradient(155deg,#29362d,#101718 78%); }
+  .chapter-places { background:linear-gradient(155deg,#27383b,#101618 78%); }
+  .chapter-days { background:linear-gradient(155deg,#44372b,#171615 78%); }
+  .chapter-becoming { background:linear-gradient(155deg,#303044,#13151b 78%); }
+  .chapter-card:hover { transform:translateY(-6px); border-color:rgba(195,255,173,.45); box-shadow:0 22px 48px rgba(0,0,0,.24); }
+  .chapter-card:hover:before { transform:scale(1.09) rotate(-5deg); color:rgba(195,255,173,.23); }
+  .chapter-card:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  .chapter-no { color:var(--accent); font:7px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:1.1px; }
+  .chapter-title { margin-top:39px; font:400 clamp(21px,2vw,29px)/1.05 Georgia,serif; letter-spacing:-.035em; }
+  .chapter-desc { margin-top:12px; max-width:225px; color:#9aa7a1; font-size:9px; line-height:1.65; }
+  .chapter-arrow { margin-top:auto; padding-top:23px; color:#a8b7ac; font:7px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.65px; }
+  @media (max-width: 1100px) {
+    .hero { grid-template-columns:minmax(0,.9fr) minmax(330px,1.1fr); gap:24px; }
+    .film-negative { min-height:440px; }
+    .chapter-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .chapter-card { min-height:220px; }
+  }
+  @media (max-width: 760px) {
+    .hero { grid-template-columns:1fr; min-height:0; gap:27px; }
+    h1 { font-size:clamp(52px,10.5vw,76px); }
+    .hero-copy p { max-width:560px; }
+    .life-film-board { max-width:590px; width:100%; justify-self:center; }
+    .film-negative { min-height:450px; }
+    .film-frame-copy strong { font-size:24px; }
+  }
+  @media (max-width: 650px) {
+    .hero { display:grid; gap:22px; margin-bottom:40px; }
+    .hero-copy { padding:8px 0 0; }
+    .hero-overline { margin-bottom:25px; font-size:7px; letter-spacing:.75px; }
+    h1 { font-size:clamp(47px,12.5vw,72px); line-height:.95; margin:20px 0 22px; }
+    .hero-copy p { font-size:11px; line-height:1.9; }
+    .hero-buttons { display:flex; flex-wrap:wrap; }
+    .hero-buttons .btn.primary { max-width:230px; }
+    .life-film-board { padding:12px; }
+    .film-negative { min-height:395px; margin:12px 0; }
+    .film-main-frame { left:9%; top:12%; width:72%; height:73%; border-width:5px; }
+    .film-float-frame { width:51%; height:40%; right:4%; bottom:13%; border-width:4px; }
+    .film-frame-copy { left:9px; bottom:9px; }
+    .film-frame-copy strong { font-size:19px; }
+    .film-float-frame .film-frame-copy strong { font-size:14px; }
+    .film-vertical-note { right:5px; font-size:6px; }
+    .film-board-top,.film-board-foot { font-size:6px; letter-spacing:.6px; }
+    .chapter-heading { grid-template-columns:1fr; gap:14px; }
+    .chapter-heading h2 { font-size:clamp(43px,11vw,62px); }
+    .chapter-heading>p { max-width:520px; }
+    .chapter-cards { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    .chapter-card { min-height:220px; padding:13px 11px; }
+    .chapter-title { font-size:21px; margin-top:32px; }
+    .chapter-desc { font-size:8px; }
+    .chapter-arrow { font-size:6px; letter-spacing:.2px; }
+  }
+  @media (max-width: 390px) {
+    .chapter-cards { grid-template-columns:1fr; }
+    .chapter-card { min-height:190px; }
+  }
 
+  /* MONOCHROME EDITORIAL — quiet luxury, gallery-first */
+  :root {
+    color-scheme: light;
+    --paper: #f7f7f4;
+    --surface: #ffffff;
+    --surface-2: #efefec;
+    --ink: #111111;
+    --muted: #73736f;
+    --line: #deded9;
+    --accent: #111111;
+    --accent-deep: #343434;
+    --olive: #6f6f6a;
+    --shadow: 0 24px 65px rgba(0,0,0,.075);
+  }
+  html, html.daylight-mode { color-scheme: light; background: var(--paper); }
+  body, html.daylight-mode body {
+    background: #f7f7f4;
+    color: #111111;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  body:before, html.daylight-mode body:before {
+    opacity: .018;
+    mix-blend-mode: multiply;
+  }
+  .app { background: transparent; }
+  .shell { max-width: 1780px; grid-template-columns: 224px minmax(0,1fr); }
+  .sidebar, html.daylight-mode .sidebar {
+    background: #fafaf8;
+    border-right: 1px solid #deded9;
+    padding: 35px 19px 24px;
+    gap: 43px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .brand { gap: 10px; }
+  .brand-mark {
+    width: 34px; height: 34px; border: 1px solid #111;
+    box-shadow: none; border-radius: 50%;
+  }
+  .brand-mark:before { width: 16px; height: 16px; border-color: #111; border-width: 1px; }
+  .brand-mark:after { width: 4px; height: 4px; background: #111; box-shadow: none; }
+  .brand-name { color: #111; font: 26px/.95 Georgia, "Times New Roman", serif; letter-spacing: -1.1px; }
+  .brand-tag { color: #777; font-size: 8px; letter-spacing: 1.25px; }
+  .nav-label { color: #858580; font: 8px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 1.6px; }
+  .nav { gap: 4px; }
+  .nav button {
+    color: #656560;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 12px 11px;
+    font-size: 11px;
+    letter-spacing: .1px;
+  }
+  .nav button:hover { color: #111; background: #eee; transform: none; }
+  .nav button.active { color: #fff; background: #111; border-color: #111; }
+  .nav-icon { color: inherit; font-size: 15px; }
+  .mini-memory, html.daylight-mode .mini-memory {
+    background: #f0f0ed;
+    border: 1px solid #e1e1dc;
+    border-radius: 2px;
+    color: #111;
+  }
+  .mini-memory .eyebrow { color: #777; font-size: 8px; letter-spacing: 1.4px; }
+  .mini-memory p { color: #111; font: 18px/1.3 Georgia, serif; }
+  .mini-memory button, .text-link { color: #111; }
+  .avatar { background: #111; color: #fff; border-radius: 50%; }
+  .profile { border-top-color: #deded9; }
+  .profile strong { color: #111; font-weight: 550; }
+  .profile small { color: #858580; font-size: 8px; letter-spacing: .4px; }
+  main { padding: 34px clamp(25px,5vw,84px) 78px; }
+  .topbar, html.daylight-mode .topbar {
+    background: linear-gradient(180deg,rgba(247,247,244,.98),rgba(247,247,244,.9),transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin-bottom: 24px;
+  }
+  .date-stamp { color: #777; font: 8px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 1.35px; }
+  .icon-button, .btn {
+    color: #111;
+    border: 1px solid #cfcfca;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: none;
+    font-size: 10px;
+    letter-spacing: .15px;
+    min-height: 42px;
+    padding: 0 16px;
+  }
+  .icon-button { width: 42px; padding: 0; }
+  .btn:hover, .icon-button:hover {
+    color: #111; background: #ededeb; border-color: #111;
+    transform: translateY(-1px); box-shadow: none;
+  }
+  .btn.primary, html.daylight-mode .btn.primary {
+    background: #111; color: #fff; border-color: #111; font-weight: 600;
+  }
+  .btn.primary:hover { background: #333; color: #fff; box-shadow: none; }
+  .btn.ink { background: #fff; color: #111; border-color: #111; }
+  .kicker { color: #555; font-size: 8px; letter-spacing: 2.1px; }
+  .kicker:before { background: #111; width: 24px; }
+  h1 { color: #111; font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
+  h1 em, .chapter-heading h2 em, .manifesto-copy em { color: #555; }
+  .hero { gap: clamp(28px,4.3vw,72px); }
+  .hero-overline { color: #777; font-size: 8px; letter-spacing: 1.25px; }
+  .hero-overline span:last-child { color: #111; }
+  .hero-copy p { color: #686863; font-size: 12px; line-height: 1.95; }
+  .hero-buttons .btn.primary { max-width: 280px; }
+  .life-film-board {
+    border: 1px solid #d4d4ce;
+    border-radius: 1px;
+    background: #f0f0ed;
+    box-shadow: 0 26px 60px rgba(0,0,0,.07);
+  }
+  .life-film-board:before {
+    border-color: rgba(0,0,0,.13);
+    box-shadow: 0 0 0 21px rgba(0,0,0,.018),0 0 0 57px rgba(0,0,0,.012);
+  }
+  .film-board-top, .film-board-foot { color: #686863; }
+  .film-board-top span:last-child, .film-board-foot span:last-child { color: #111; }
+  .film-negative {
+    background: #181818;
+    border-color: #c8c8c1;
+    box-shadow: inset 0 0 45px rgba(0,0,0,.15);
+  }
+  .film-negative:before { border-color: rgba(255,255,255,.07); }
+  .film-perforations {
+    background: radial-gradient(ellipse at center,#e6e6e0 0 3px,transparent 3.6px) 0 0/24px 12px repeat-x;
+    opacity: .85;
+  }
+  .film-main-frame, .film-float-frame {
+    background: #eee;
+    border-color: #f3f3ef;
+    box-shadow: 0 16px 36px rgba(0,0,0,.24);
+  }
+  .film-float-frame { border-color: #fff; }
+  .film-main-frame img, .film-float-frame img { filter: grayscale(1) contrast(1.06) !important; }
+  .film-frame-copy small { color: #fff; }
+  .film-vertical-note { color: rgba(255,255,255,.7); }
+  .film-frame-number { color: #bdbdb7; }
+  .film-progress { background: #d5d5cf; }
+  .film-progress span { background: #111; box-shadow: none; }
+  .stats { border-color: #d5d5d0; }
+  .stat { border-right-color: #d5d5d0; }
+  .stat strong { color: #111; font-weight: 400; }
+  .stat small { color: #73736f; }
+  .manifesto-row { border-top-color: #111; border-bottom-color: #d5d5d0; }
+  .manifesto-meta { color: #7a7a74; }
+  .manifesto-meta span:first-child { color: #111; }
+  .manifesto-copy { color: #111; }
+  .manifesto-foot { color: #777; }
+  .section-head h2, .chapter-heading h2 { color: #111; font-weight: 400; }
+  .section-head p, .chapter-heading>p { color: #74746f; }
+  .chapter-card, .chapter-people, .chapter-places, .chapter-days, .chapter-becoming {
+    color: #111;
+    background: #fff;
+    border: 1px solid #d7d7d1;
+    border-radius: 1px;
+    box-shadow: none;
+  }
+  .chapter-card:before { color: rgba(0,0,0,.1); }
+  .chapter-card:after { border-color: rgba(0,0,0,.1); box-shadow: 0 0 0 16px rgba(0,0,0,.018),0 0 0 35px rgba(0,0,0,.012); }
+  .chapter-card:hover { border-color: #111; box-shadow: 0 12px 30px rgba(0,0,0,.05); }
+  .chapter-card:hover:before { color: rgba(0,0,0,.2); }
+  .chapter-no { color: #777; }
+  .chapter-title { color: #111; font-family: Georgia, "Times New Roman", serif; }
+  .chapter-desc { color: #73736f; }
+  .chapter-arrow { color: #111; }
+  .chip {
+    color: #666; background: transparent; border-color: #d2d2cc;
+    border-radius: 2px; font-size: 9px;
+  }
+  .chip:hover, .chip.active { color: #fff; background: #111; border-color: #111; }
+  .search {
+    background: #fff; border-color: #d2d2cc; border-radius: 2px; color: #111;
+  }
+  .search:focus, textarea:focus, input:focus { border-color: #111; box-shadow: 0 0 0 2px rgba(0,0,0,.06); }
+  .photo-grid { gap: clamp(14px,2vw,26px); }
+  .photo-frame {
+    border: 1px solid #e2e2dc; border-radius: 1px; background: #e8e8e4;
+  }
+  .photo-frame img { filter: grayscale(1) contrast(1.03) !important; }
+  .photo-frame:after { background: linear-gradient(180deg,transparent 45%,rgba(0,0,0,.68)); }
+  .photo-overlay strong { font: 20px Georgia, "Times New Roman", serif; }
+  .photo-overlay small { font-size: 8px; }
+  .film-badge { border-radius: 1px; }
+  .photo-meta { color: #75756f; }
+  .photo-meta button { color: #111; }
+  .photo-card:hover .photo-frame { border-color: #111; box-shadow: 0 15px 32px rgba(0,0,0,.09); }
+  .upload-zone, html.daylight-mode .upload-zone {
+    color: #111; background: #fff; border: 1px dashed #bcbcb5; border-radius: 1px;
+  }
+  .upload-zone .upload-glyph { background: #f0f0ed; color: #111; border-radius: 1px; }
+  .upload-zone strong { color: #111; font: 25px Georgia, "Times New Roman", serif; }
+  .upload-zone p { color: #73736f; }
+  .footer-note { color: #777; border-top-color: #d7d7d1; }
+  .editor-stage, html.daylight-mode .editor-stage {
+    background: #eeeeea; border-color: #deded8; border-radius: 1px;
+  }
+  .editor-stage:has(.editor-photo):after { mix-blend-mode: soft-light; }
+  .editor-controls, html.daylight-mode .editor-controls {
+    background: #fff; border: 1px solid #deded8; border-radius: 1px; box-shadow: none;
+  }
+  .editor-controls h3 { color: #111; font-family: Georgia, "Times New Roman", serif; }
+  .editor-controls>p { color: #73736f; }
+  .looks { gap: 6px; }
+  .look, html.daylight-mode .look {
+    color: #555; background: #fff; border: 1px solid #deded8; border-radius: 1px;
+  }
+  .look.active { color: #111; border-color: #111; box-shadow: inset 0 0 0 1px #111; }
+  .look:hover { border-color: #111; }
+  .look-swatch { border-radius: 1px; filter: grayscale(1); }
+  input[type=range] { accent-color: #111; }
+  .slider-label span:last-child { color: #111; }
+  .field label { color: #6d6d67; }
+  .field input, .field textarea, html.daylight-mode .field input, html.daylight-mode .field textarea {
+    color: #111; background: #fafaf8; border-color: #deded8; border-radius: 1px;
+  }
+  .timeline:before { border-left-color: #cfcfc9; }
+  .timeline-dot { color: #111; background: #fff; border-color: #d5d5cf; border-radius: 50%; }
+  .timeline-content, html.daylight-mode .timeline-content {
+    background: #fff; border-color: #deded8; border-radius: 1px;
+  }
+  .timeline-header h3 { color: #111; font-family: Georgia, "Times New Roman", serif; }
+  .timeline-header small { color: #777; }
+  .timeline-photos img { filter: grayscale(1) !important; border-radius: 1px; }
+  .story-preview-wrap, html.daylight-mode .story-preview-wrap {
+    background: #eeeeea; border-color: #deded8; border-radius: 1px;
+  }
+  .story-preview { border-radius: 1px; }
+  .story-preview img { filter: grayscale(1) contrast(1.03) !important; }
+  .story-copy h3 { font-family: Georgia, "Times New Roman", serif; }
+  .template, html.daylight-mode .template {
+    background: #fff; color: #111; border-color: #deded8; border-radius: 1px;
+  }
+  .template.active, .template:hover { border-color: #111; box-shadow: inset 0 0 0 1px #111; }
+  .template-art, .template:nth-child(2) .template-art, .template:nth-child(3) .template-art {
+    background: linear-gradient(145deg,#f0f0ed,#c8c8c2 52%,#454545);
+    border-radius: 1px; filter: grayscale(1);
+  }
+  .template-art:after { color: #fff; }
+  .template:nth-child(2) .template-art:after { color: #111; }
+  .template span { color: #555; }
+  .empty-state { background: #fff; border-color: #d3d3cd; color: #73736f; border-radius: 1px; }
+  .toast { background: #111; color: #fff; border-radius: 2px; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid #111; outline-offset: 3px;
+  }
+  html.daylight-mode {
+    --paper: #f7f7f4; --surface: #fff; --surface-2: #efefec;
+    --ink: #111; --muted: #73736f; --line: #deded9;
+    --accent: #111; --accent-deep: #343434; --olive: #6f6f6a;
+  }
+  @media (max-width: 960px) {
+    .sidebar, html.daylight-mode .sidebar { background: #fafaf8; }
+    .hero { gap: 25px; }
+  }
+  @media (max-width: 650px) {
+    .sidebar, html.daylight-mode .sidebar {
+      background: rgba(250,250,248,.97); border-top-color: #deded9;
+    }
+    main { padding: 20px 17px 42px; }
+    .topbar, html.daylight-mode .topbar {
+      background: linear-gradient(180deg,rgba(247,247,244,.98),rgba(247,247,244,.9),transparent);
+    }
+    .hero { gap: 22px; }
+    .life-film-board { box-shadow: 0 12px 30px rgba(0,0,0,.05); }
+    .chapter-card { background: #fff; }
+    .film-negative { background: #181818; }
+  }
+  /* HORIZONTAL NAV — clean editorial masthead */
+  .shell {
+    display: block;
+    max-width: none;
+    min-height: 100vh;
+  }
+  .sidebar, html.daylight-mode .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(155px,.65fr) minmax(0,1.7fr) auto;
+    align-items: center;
+    gap: clamp(18px,3vw,48px);
+    padding: 17px clamp(24px,5vw,84px);
+    background: rgba(250,250,248,.96);
+    border-right: 0;
+    border-bottom: 1px solid #deded9;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .brand { padding: 0; min-width: 0; }
+  .brand-name { white-space: nowrap; }
+  .brand-tag { white-space: nowrap; }
+  .sidebar > div:nth-child(2) { min-width: 0; }
+  .nav-label { display: none; }
+  .nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(2px,.5vw,8px);
+  }
+  .nav button {
+    width: auto;
+    flex: 0 1 auto;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 11px clamp(9px,1.2vw,17px);
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size: 10px;
+  }
+  .nav-icon { display: none; }
+  .side-bottom { display: none; }
+  main { padding: 14px clamp(24px,5vw,84px) 78px; }
+  .topbar {
+    position: relative;
+    top: auto;
+    margin: 0 0 24px;
+    padding: 14px 0 16px;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  @media (max-width: 960px) and (min-width: 651px) {
+    .sidebar, html.daylight-mode .sidebar {
+      grid-template-columns: minmax(125px,.55fr) minmax(0,1.45fr);
+      padding: 15px 22px;
+      gap: 18px;
+    }
+    .brand-mark { width: 31px; height: 31px; }
+    .brand-name { font-size: 23px; }
+    .brand-tag { font-size: 7px; letter-spacing: .9px; }
+    .nav { justify-content: flex-end; gap: 2px; }
+    .nav button { padding: 10px 9px; font-size: 9px; }
+    main { padding: 12px 24px 68px; }
+  }
+  @media (max-width: 760px) and (min-width: 651px) {
+    .sidebar, html.daylight-mode .sidebar {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 13px 20px 10px;
+    }
+    .brand { justify-content: center; }
+    .brand-mark { display: none; }
+    .brand-name-wrap { text-align: center; }
+    .brand-name { font-size: 22px; }
+    .brand-tag { margin-top: 3px; }
+    .nav { justify-content: center; }
+    .nav button { padding: 9px 13px; font-size: 10px; }
+  }
+  @media (max-width: 650px) {
+    .shell { display: block; padding-bottom: 68px; }
+    .sidebar, html.daylight-mode .sidebar {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 63px;
+      display: block;
+      padding: 5px 8px max(5px,env(safe-area-inset-bottom));
+      background: rgba(250,250,248,.97);
+      border-top: 1px solid #deded9;
+      border-bottom: 0;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .brand, .side-bottom { display: none; }
+    .nav-label { display: none; }
+    .nav {
+      display: flex;
+      height: 100%;
+      justify-content: space-around;
+      align-items: stretch;
+      gap: 3px;
+    }
+    .nav button {
+      flex: 1;
+      width: auto;
+      flex-direction: column;
+      gap: 3px;
+      padding: 5px 2px;
+      border-radius: 2px;
+      font-size: 9px;
+    }
+    .nav-icon { display: block; font-size: 17px; }
+    .nav button .nav-text { display: block; font-size: 9px; }
+    main { padding: 15px 17px 42px; }
+    .topbar { margin: 0 0 20px; padding: 8px 0 13px; }
+  }
 </style>
 </head>
 <body>
@@ -691,50 +1317,72 @@
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-mark"></div>
-        <div class="brand-name-wrap"><div class="brand-name">một cuộn</div><div class="brand-tag">keep it, in film</div></div>
+        <div class="brand-name-wrap"><div class="brand-name">một cuộn</div><div class="brand-tag">an entire life, in frames</div></div>
       </div>
       <div>
-        <div class="nav-label">Không gian của bạn</div>
+        <div class="nav-label">Cuộn phim đời tôi</div>
         <nav class="nav" aria-label="Điều hướng chính">
-          <button class="active" data-page="gallery"><span class="nav-icon">▦</span><span class="nav-text">Kho ảnh</span></button>
+          <button class="active" data-page="gallery"><span class="nav-icon">▦</span><span class="nav-text">Cuộn phim</span></button>
           <button data-page="darkroom"><span class="nav-icon">◉</span><span class="nav-text">Phòng tối</span></button>
-          <button data-page="memories"><span class="nav-icon">↟</span><span class="nav-text">Ký ức</span></button>
-          <button data-page="stories"><span class="nav-icon">▤</span><span class="nav-text">Story Studio</span></button>
+          <button data-page="memories"><span class="nav-icon">↟</span><span class="nav-text">Dòng đời</span></button>
+          <button data-page="stories"><span class="nav-icon">▤</span><span class="nav-text">Kể chuyện</span></button>
         </nav>
       </div>
       <div class="side-bottom">
-        <div class="mini-memory"><div class="eyebrow">Một lời nhắc nhỏ</div><p>“Đừng chỉ chụp những ngày đặc biệt.”</p><button data-go="stories">Kể lại câu chuyện ↗</button></div>
-        <div class="profile"><div class="avatar">T</div><div><strong>Góc nhỏ của Tiến</strong><small>Free / Local workspace</small></div></div>
+        <div class="mini-memory"><div class="eyebrow">Một lời nhắc nhỏ</div><p>“Không có khoảnh khắc nào là thừa trong một cuộc đời.”</p><button data-go="stories">Kể tiếp câu chuyện ↗</button></div>
+        <div class="profile"><div class="avatar">T</div><div><strong>Cuộn phim của tôi</strong><small>PERSONAL LIFE ARCHIVE</small></div></div>
       </div>
     </aside>
     <main>
       <div class="topbar">
         <div class="date-stamp" id="todayLabel">THỨ SÁU, 09 THÁNG 10</div>
-        <div class="top-actions"><button class="icon-button" id="themeBtn" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button><button class="btn primary" id="topUpload">＋ Thêm ảnh</button></div>
+        <div class="top-actions"><button class="icon-button" id="themeBtn" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button><button class="btn primary" id="topUpload">＋ Ghi lại</button></div>
       </div>
 
       <section class="page active" id="page-gallery">
         <div class="hero">
           <div class="hero-copy">
-            <div class="hero-overline"><span>CINEMATIC EDITION · 2026</span><span>STUDY Nº 01 / 04</span></div>
-            <div class="kicker">Your life, in little frames</div>
-            <h1>Đời thường,<br>nhưng <em>đáng nhớ.</em></h1>
-            <p>Một nơi để chỉnh màu, gom những khoảnh khắc và kể lại câu chuyện của chính bạn — không cần ngày nào cũng phải thật đặc biệt.</p>
-            <div class="hero-buttons"><button class="btn primary" id="heroUpload">＋ Thêm ảnh đầu tiên</button><button class="btn" data-go="darkroom">Vào phòng tối ↗</button></div>
+            <div class="hero-overline"><span>PERSONAL ARCHIVE · 35MM</span><span>ROLL Nº 001</span></div>
+            <div class="kicker">The film of my life</div>
+            <h1>Cả một đời.<br>Gói lại trong<br><em>một cuộn film.</em></h1>
+            <p>Không chỉ là nơi cất ảnh. Đây là cuốn phim lưu lại mọi điều đã tạo nên mình — những người từng gặp, nơi đã đi qua, cột mốc đã chạm tới và cả những ngày bình thường rồi sẽ thành quý giá.</p>
+            <div class="hero-buttons"><button class="btn primary" id="heroUpload">＋ Ghi lại khoảnh khắc đầu tiên</button><button class="btn" data-go="memories">Mở dòng đời ↗</button></div>
           </div>
           <div class="hero-art" aria-label="Minh họa hai người lưu giữ một khoảnh khắc ngoài trời"><div class="sun"></div><div class="hill1"></div><div class="hill2"></div><svg class="hero-people" viewBox="0 0 380 280" aria-hidden="true"><g stroke-linecap="round" stroke-linejoin="round"><path d="M49 246 Q85 207 126 231 L160 263 H45Z" class="dark-cloth"/><path d="M100 193 Q82 213 67 244" fill="none" stroke="#d39a75" stroke-width="17"/><path d="M101 170 Q126 158 147 180 L163 235 Q129 251 94 222Z" class="cloth-a"/><path d="M106 190 L143 215" class="detail"/><circle cx="112" cy="139" r="26" class="skin"/><path d="M86 139 Q82 104 112 108 Q141 106 139 137 L130 130 Q111 120 94 136 L91 151Z" class="hair"/><path d="M94 167 Q111 159 126 168" fill="none" stroke="#9a624d" stroke-width="3"/><path d="M117 204 Q139 211 154 197" fill="none" stroke="#d39a75" stroke-width="14"/><path d="M154 197 Q166 192 174 204" fill="none" stroke="#d39a75" stroke-width="12"/><path d="M183 251 Q218 225 265 244 L295 265 H180Z" class="cloth-a"/><path d="M210 184 Q234 164 257 187 L276 240 Q239 254 202 225Z" class="cloth-b"/><path d="M225 192 L252 218" class="detail"/><circle cx="232" cy="143" r="27" class="skin"/><path d="M205 144 Q199 107 229 108 Q261 109 260 143 L250 128 Q231 119 212 136 L211 151Z" class="hair"/><path d="M216 171 Q233 164 250 171" fill="none" stroke="#9a624d" stroke-width="3"/><path d="M211 202 Q186 212 170 204" fill="none" stroke="#d39a75" stroke-width="14"/><path d="M170 204 Q160 204 153 216" fill="none" stroke="#d39a75" stroke-width="12"/><path d="M149 236 Q178 226 202 239" fill="none" stroke="#384b3f" stroke-width="20"/><path d="M264 197 Q285 208 290 228" fill="none" stroke="#d39a75" stroke-width="13"/><rect x="151" y="217" width="33" height="25" rx="5" fill="#e6d4ae" transform="rotate(-8 151 217)"/><circle cx="166" cy="229" r="6" fill="#68755e"/></g></svg><div class="grain"></div><div class="hero-note"><div><small>Cuộn film của bạn · 2026</small><strong>Somewhere, slowly.</strong></div><span>Ảnh mẫu</span></div></div>
+          <div class="life-film-board" data-reveal aria-label="Cuộn phim gồm những lát cắt của cuộc đời">
+            <div class="film-board-top"><span>ONE LIFE / MANY FRAMES</span><span>36 EXP.</span></div>
+            <div class="film-negative">
+              <div class="film-perforations" aria-hidden="true"></div>
+              <button class="film-main-frame" id="lifeFilmMain" type="button" aria-label="Mở khung hình chính"></button>
+              <button class="film-float-frame" id="lifeFilmFloat" type="button" aria-label="Mở một khung hình khác"></button>
+              <div class="film-vertical-note">KEEP THE MOMENTS THAT MADE YOU</div>
+              <div class="film-frame-number">001 — 036</div>
+              <div class="film-perforations bottom" aria-hidden="true"></div>
+            </div>
+            <div class="film-board-foot"><span id="filmRollNote">A LIFE, STILL DEVELOPING</span><span>MEMORIES IN MOTION ↗</span></div>
+            <div class="film-progress"><span></span></div>
+          </div>
         </div>
         <div class="stats">
-          <div class="stat"><strong id="photoCount">06</strong><small>khoảnh khắc đã lưu</small></div>
-          <div class="stat"><strong id="memoryCount">03</strong><small>chương ký ức</small></div>
-          <div class="stat"><strong id="editedCount">04</strong><small>ảnh đã lên màu</small></div>
+          <div class="stat"><strong id="photoCount">06</strong><small>khung hình trong cuộn</small></div>
+          <div class="stat"><strong id="memoryCount">03</strong><small>chương đời đang mở</small></div>
+          <div class="stat"><strong id="editedCount">04</strong><small>ký ức đã lên màu</small></div>
         </div>
         <div class="manifesto-row" data-reveal>
-          <div class="manifesto-meta"><span>01 / THE PHILOSOPHY</span><span>AN ARCHIVE OF LIVING</span></div>
-          <p class="manifesto-copy">Không cần một ngày thật đặc biệt. <em>Chỉ cần là ngày của bạn.</em></p>
-          <div class="manifesto-foot"><span>EVERY FRAME HOLDS A FEELING</span><span>↘ KEEP EXPLORING</span></div>
+          <div class="manifesto-meta"><span>01 / THE OBJECTIVE</span><span>A LIFE, NOT JUST A GALLERY</span></div>
+          <p class="manifesto-copy">Một cuộc đời không được kể bằng những bức ảnh đẹp nhất, mà bằng <em>tất cả những điều đã làm nên mình.</em></p>
+          <div class="manifesto-foot"><span>PEOPLE · PLACES · MILESTONES · ORDINARY DAYS</span><span>↘ YOUR LIFE, FRAME BY FRAME</span></div>
         </div>
-        <div class="section-head"><div><h2>Những khung hình gần đây</h2><p>Mỗi tấm ảnh giữ lại một phiên bản của ngày hôm ấy.</p></div><button class="text-link" data-go="memories">Xem dòng thời gian ↗</button></div>
+        <div class="chapter-section" data-reveal>
+          <div class="chapter-heading"><div><div class="kicker">Every life has its own chapters</div><h2>Đời mình, qua<br><em>những chương nhỏ.</em></h2></div><p>Một cuộn film không cần đi theo thứ tự hoàn hảo. Chỉ cần đủ chỗ cho những người, những nơi và những khoảnh khắc mình không muốn quên.</p></div>
+          <div class="chapter-cards">
+            <button class="chapter-card chapter-people" data-go="memories"><span class="chapter-no">01 / PEOPLE</span><span class="chapter-title">Những người<br>đã ở lại.</span><span class="chapter-desc">Gia đình, bạn bè, tình yêu và những lần tình cờ gặp gỡ.</span><span class="chapter-arrow">MỞ CHƯƠNG ↗</span></button>
+            <button class="chapter-card chapter-places" data-go="memories"><span class="chapter-no">02 / PLACES</span><span class="chapter-title">Những nơi<br>mình đã đi qua.</span><span class="chapter-desc">Thành phố, chuyến đi và những nơi khiến mình đổi khác.</span><span class="chapter-arrow">MỞ CHƯƠNG ↗</span></button>
+            <button class="chapter-card chapter-days" data-go="gallery"><span class="chapter-no">03 / EVERYDAY</span><span class="chapter-title">Những ngày<br>rất đỗi bình thường.</span><span class="chapter-desc">Một buổi chiều, bàn cà phê, ánh nắng chạm vào căn phòng.</span><span class="chapter-arrow">XEM KHUNG HÌNH ↗</span></button>
+            <button class="chapter-card chapter-becoming" data-go="stories"><span class="chapter-no">04 / BECOMING</span><span class="chapter-title">Người mình<br>đang trở thành.</span><span class="chapter-desc">Những cột mốc, lựa chọn và phiên bản mới của chính mình.</span><span class="chapter-arrow">KỂ CHUYỆN ↗</span></button>
+          </div>
+        </div>
+        <div class="section-head"><div><div class="kicker">Recently developed</div><h2>Những khung hình vừa hé mở</h2><p>Mỗi khung hình là một mảnh nhỏ của hành trình — còn nhiều điều phía trước sẽ được thêm vào.</p></div><button class="text-link" data-go="memories">Xem toàn bộ dòng đời ↗</button></div>
         <div class="tools-row"><div class="filters" id="galleryFilters"><button class="chip active" data-filter="all">Tất cả</button><button class="chip" data-filter="edited">Đã lên màu</button><button class="chip" data-filter="unedit">Ảnh gốc</button><button class="chip" data-filter="favorite">Yêu thích ♡</button></div><input class="search" id="searchBox" placeholder="⌕  Tìm một khoảnh khắc..." aria-label="Tìm ảnh"></div>
         <div class="photo-grid" id="photoGrid"></div>
         <div class="upload-zone" id="dropZone"><div class="upload-glyph">＋</div><strong>Đưa thêm một ngày vào cuộn film</strong><p>Kéo ảnh vào đây hoặc chọn từ thiết bị của bạn. Ảnh được xử lý ngay trong trình duyệt của bạn.</p><button class="btn small" id="choosePhotos">Chọn ảnh từ thiết bị</button></div>
@@ -742,7 +1390,7 @@
       </section>
 
       <section class="page" id="page-darkroom">
-        <div class="section-head"><div><div class="kicker">The darkroom</div><h2>Phòng tối</h2><p>Chọn một màu film. Giữ lại cảm giác của khoảnh khắc.</p></div><button class="btn small" id="editorChoose">＋ Chọn ảnh</button></div>
+        <div class="section-head"><div><div class="kicker">Develop the memory</div><h2>Phòng tối</h2><p>Tráng lại những khoảnh khắc đã xảy ra. Chọn chất màu giữ đúng cảm giác mà mình muốn nhớ.</p></div><button class="btn small" id="editorChoose">＋ Chọn ảnh</button></div>
         <div class="editor-layout">
           <div class="editor-stage" id="editorStage"><div class="editor-placeholder"><div><div style="font-size:36px;margin-bottom:12px">◉</div><strong style="font:24px Georgia,serif;color:var(--ink);font-weight:400">Chọn một khung hình</strong><p style="font-size:11px;max-width:240px;line-height:1.7">Tải ảnh của bạn lên hoặc chọn một tấm từ Kho ảnh để bắt đầu chỉnh màu.</p><button class="btn primary" id="editorEmptyChoose">Chọn ảnh</button></div></div></div>
           <div class="editor-controls">
@@ -764,12 +1412,12 @@
       </section>
 
       <section class="page" id="page-memories">
-        <div class="section-head"><div><div class="kicker">Collected chapters</div><h2>Dòng thời gian ký ức</h2><p>Gom những tấm ảnh theo nơi chốn, người thương và những ngày muốn giữ lại.</p></div><button class="btn primary small" id="newMemory">＋ Tạo chương</button></div>
+        <div class="section-head"><div><div class="kicker">Your life, frame by frame</div><h2>Dòng đời của tôi</h2><p>Từ những lần đầu tiên đến những ngày bình thường — mỗi sự kiện sẽ có thời điểm, nơi chốn, người đồng hành và những khung hình đi cùng.</p></div><button class="btn primary small" id="newMemory">＋ Tạo chương</button></div>
         <div class="timeline" id="timeline"></div>
       </section>
 
       <section class="page" id="page-stories">
-        <div class="section-head"><div><div class="kicker">A little story for your story</div><h2>Story Studio</h2><p>Chọn ảnh, viết một dòng chú thích và xuất khung hình dọc để chia sẻ.</p></div><button class="btn primary small" id="downloadStory">Xuất story ↓</button></div>
+        <div class="section-head"><div><div class="kicker">Make a frame worth keeping</div><h2>Kể chuyện bằng khung hình</h2><p>Chọn một khoảnh khắc, ghi lại ngày tháng và vài dòng nhắn gửi để biến sự kiện ấy thành một tấm áp phích kỷ niệm.</p></div><button class="btn primary small" id="downloadStory">Xuất story ↓</button></div>
         <div class="story-layout">
           <div class="story-preview-wrap"><div class="story-preview" id="storyPreview"><img id="storyImage" alt="Ảnh story xem trước"><div class="story-copy"><div class="story-date" id="storyDate">A LITTLE MEMORY · 2026</div><h3 id="storyTitle">Some days<br>stay with us.</h3><p id="storyCaption">lưu lại những điều mình không muốn quên.</p></div></div></div>
           <div>
@@ -822,6 +1470,18 @@
   function notify(msg) { const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600); }
   function formatCount(n){return String(n).padStart(2,'0')}
   function photoById(id){return photos.find(p=>p.id===id)}
+  function renderLifeFilm(){
+    const main=$('#lifeFilmMain'), floating=$('#lifeFilmFloat');
+    if(!main||!floating||!photos.length)return;
+    const first=photos.find(p=>p.id==='p3')||photos[0];
+    const second=photos.find(p=>p.id==='p6')||photos[1]||first;
+    const frameMarkup=(p,label)=>'<img src="'+p.image+'" alt="'+esc(p.title)+'" style="'+getPreviewStyle(p)+'"><span class="film-frame-copy"><small>'+label+' · '+esc(p.date)+'</small><strong>'+esc(p.title)+'</strong><span>'+esc(p.place)+'</span></span>';
+    main.innerHTML=frameMarkup(first,'FRAME 003');
+    floating.innerHTML=frameMarkup(second,'FRAME 006');
+    main.onclick=()=>{currentPhotoId=first.id;go('darkroom')};
+    floating.onclick=()=>{currentPhotoId=second.id;go('darkroom')};
+    $('#filmRollNote').textContent=formatCount(photos.length)+' FRAMES IN THIS ROLL · STILL DEVELOPING';
+  }
   function go(page){
     $$('.page').forEach(p=>p.classList.toggle('active',p.id===`page-${page}`));
     $$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
@@ -869,7 +1529,7 @@
         const id='up_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
         const p={id,title:file.name.replace(/\.[^.]+$/,'').slice(0,30)||'Một khoảnh khắc',place:'Ảnh của bạn',date:new Date().toLocaleDateString('vi-VN'),category:'everyday',edited:false,favorite:false,look:'portra',image:reader.result,uploaded:true};
         photos.unshift(p); if(i===0){currentPhotoId=id;}
-        renderGallery();refreshStorySelect();
+        renderGallery();refreshStorySelect();renderLifeFilm();
         if(i===valid.length-1)notify(`Đã thêm ${valid.length} ảnh vào cuộn film.`);
         if(i===0&&$('#page-darkroom').classList.contains('active'))renderEditor();
       };
@@ -931,7 +1591,7 @@
     const ok=await exportPhoto(p,editSettings);renderGallery();if(ok)notify('Đã xuất bản màu. Ảnh gốc vẫn được giữ nguyên.');
   });
   function renderTimeline(){
-    const labels=[{key:'travel',title:'Những nơi mình đã đi',date:'THÁNG 9 · 2026',emoji:'↟'},{key:'friends',title:'Có nhau trong những ngày thường',date:'THÁNG 8–10 · 2026',emoji:'♡'},{key:'everyday',title:'Những ngày rất đỗi bình thường',date:'THÁNG 9–10 · 2026',emoji:'☼'}];
+    const labels=[{key:'travel',title:'Những nơi đã làm mình đổi khác',date:'PLACES · 2026',emoji:'↟'},{key:'friends',title:'Những người đã ở lại',date:'PEOPLE · 2026',emoji:'♡'},{key:'everyday',title:'Những ngày tưởng như bình thường',date:'EVERYDAY · 2026',emoji:'☼'}];
     $('#timeline').innerHTML=labels.map(g=>{const list=photos.filter(p=>p.category===g.key).slice(0,4);return `<div class="timeline-item"><div class="timeline-dot">${g.emoji}</div><div class="timeline-content"><div class="timeline-header"><div><h3>${g.title}</h3><small>${g.date} · ${list.length} KHUNG HÌNH</small></div><button class="text-link" data-timeline-filter="${g.key}">Mở chương ↗</button></div><div class="timeline-photos">${(list.length?list:photos.slice(0,Math.min(4,photos.length))).map(p=>`<img src="${p.image}" alt="${esc(p.title)}" title="${esc(p.title)}" data-open-photo="${p.id}">`).join('')}</div></div></div>`}).join('');
     $$('[data-open-photo]').forEach(img=>img.addEventListener('click',()=>{currentPhotoId=img.dataset.openPhoto;go('darkroom')}));
     $$('[data-timeline-filter]').forEach(b=>b.addEventListener('click',()=>{activeFilter='all';$('#searchBox').value='';go('gallery');$('#searchBox').value='';renderGallery();notify('Mở Kho ảnh để xem các khung hình.')}));
@@ -985,20 +1645,20 @@
     }), {threshold:.08, rootMargin:'0px 0px -28px 0px'});
     nodes.forEach(n=>{ if(!n.classList.contains('is-visible')) observer.observe(n); });
   };
-  const heroVisual = document.querySelector('.hero-art');
+  const heroVisual = document.querySelector('.life-film-board');
   if (heroVisual && !reduceMotion) {
     heroVisual.addEventListener('pointermove', e=>{
       const r=heroVisual.getBoundingClientRect();
-      heroVisual.style.setProperty('--spot-x', ((e.clientX-r.left)/r.width*100)+'%');
-      heroVisual.style.setProperty('--spot-y', ((e.clientY-r.top)/r.height*100)+'%');
+      heroVisual.style.setProperty('--light-x', ((e.clientX-r.left)/r.width*100)+'%');
+      heroVisual.style.setProperty('--light-y', ((e.clientY-r.top)/r.height*100)+'%');
     });
-    heroVisual.addEventListener('pointerleave',()=>{heroVisual.style.setProperty('--spot-x','62%');heroVisual.style.setProperty('--spot-y','28%');});
+    heroVisual.addEventListener('pointerleave',()=>{heroVisual.style.setProperty('--light-x','70%');heroVisual.style.setProperty('--light-y','20%');});
   }
   const galleryGrid = document.querySelector('#photoGrid');
   if (galleryGrid && 'MutationObserver' in window) new MutationObserver(()=>observeReveals(galleryGrid)).observe(galleryGrid,{childList:true});
   const pageObserver = new MutationObserver(()=>observeReveals());
   pageObserver.observe(document.querySelector('main'),{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  renderGallery();refreshStorySelect();renderTimeline();observeReveals();
+  renderGallery();refreshStorySelect();renderTimeline();renderLifeFilm();
 })();
 </script>
 </body>
