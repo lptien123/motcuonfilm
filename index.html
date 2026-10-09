@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Một Cuộn — Bộ film của đời bạn</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --paper: light-dark(#f6f3eb, #171715);
+    --surface: light-dark(#fffdf8, #22221f);
+    --surface-2: light-dark(#eeeadf, #2b2a25);
+    --ink: light-dark(#24251f, #f3efe5);
+    --muted: light-dark(#77786d, #aaa99e);
+    --line: light-dark(#ded9cc, #3a3932);
+    --accent: light-dark(#c65d3b, #ec946e);
+    --accent-deep: light-dark(#93422a, #e9a184);
+    --olive: light-dark(#727b5b, #adb996);
+    --shadow: 0 12px 34px rgba(35, 32, 24, .08);
+  }
+  * { box-sizing: border-box; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { *, *:before, *:after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  button, input, textarea, select { font: inherit; }
+  button { cursor: pointer; }
+  .app { min-height: 100vh; background: var(--paper); color: var(--ink); }
+  .shell { display: grid; grid-template-columns: 236px minmax(0,1fr); min-height: 100vh; max-width: 1600px; margin: 0 auto; }
+  .sidebar { border-right: 1px solid var(--line); padding: 28px 18px 22px; display: flex; flex-direction: column; gap: 34px; }
+  .brand { display: flex; align-items: center; gap: 11px; padding: 0 9px; }
+  .brand-mark { width: 37px; height: 37px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; position: relative; }
+  .brand-mark:before { content: ''; width: 17px; height: 17px; border: 1.5px solid var(--accent); border-radius: 50%; }
+  .brand-mark:after { content: ''; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; position: absolute; }
+  .brand-name { font-family: Georgia, 'Times New Roman', serif; font-size: 23px; letter-spacing: -.7px; line-height: 1; }
+  .brand-tag { font-size: 9px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 5px; }
+  .nav-label { padding: 0 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-size: 10px; margin-bottom: 9px; }
+  .nav { display: grid; gap: 5px; }
+  .nav button { border: 0; background: transparent; color: var(--muted); width: 100%; text-align: left; display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 11px; font-size: 13px; transition: .18s; }
+  .nav button:hover { background: var(--surface-2); color: var(--ink); }
+  .nav button.active { background: var(--ink); color: var(--paper); }
+  .nav-icon { font-size: 16px; width: 18px; text-align: center; }
+  .side-bottom { margin-top: auto; }
+  .mini-memory { background: var(--surface-2); border-radius: 15px; padding: 15px; }
+  .mini-memory .eyebrow { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; }
+  .mini-memory p { font: 17px/1.25 Georgia, serif; margin: 10px 0 12px; }
+  .mini-memory button { border: 0; background: transparent; color: var(--accent); padding: 0; font-size: 11px; font-weight: 700; }
+  .profile { display: flex; align-items: center; gap: 10px; padding: 19px 8px 0; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #d8c2a1; color: #4b3528; font-family: Georgia, serif; }
+  .profile strong { display: block; font-size: 12px; font-weight: 650; }
+  .profile small { color: var(--muted); font-size: 10px; }
+  main { min-width: 0; padding: 30px clamp(20px, 4vw, 58px) 56px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 30px; }
+  .date-stamp { font-size: 11px; color: var(--muted); letter-spacing: 1.2px; text-transform: uppercase; }
+  .top-actions { display: flex; gap: 9px; align-items: center; }
+  .icon-button, .btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; min-height: 40px; padding: 0 15px; font-size: 12px; transition: .18s; }
+  .icon-button { width: 40px; padding: 0; font-size: 16px; }
+  .btn:hover, .icon-button:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff8ee; font-weight: 700; }
+  .btn.ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn.small { min-height: 34px; padding: 0 12px; font-size: 11px; }
+  .hero { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(255px,.75fr); gap: 24px; align-items: stretch; margin-bottom: 32px; }
+  .hero-copy { padding: 15px 0 8px; }
+  .kicker { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; font-size: 10px; font-weight: 750; }
+  .kicker:before { content: ''; width: 22px; height: 1px; background: currentColor; }
+  h1 { font: 400 clamp(38px, 5.3vw, 69px)/.98 Georgia, 'Times New Roman', serif; letter-spacing: -2.9px; margin: 18px 0 16px; max-width: 620px; }
+  h1 em { color: var(--accent); font-weight: 400; }
+  .hero-copy p { color: var(--muted); max-width: 460px; font-size: 13px; line-height: 1.8; margin: 0 0 22px; }
+  .hero-buttons { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .hero-art { min-height: 255px; border-radius: 18px; overflow: hidden; position: relative; background: #c7b9a1; isolation: isolate; box-shadow: var(--shadow); }
+  .hero-art .sun { position: absolute; width: 85px; height: 85px; border-radius: 50%; background: #f1d89d; right: 19%; top: 16%; opacity: .9; }
+  .hero-art .hill1 { position: absolute; left: -9%; bottom: -18%; width: 125%; height: 62%; border-radius: 50% 50% 0 0; background: #66715b; transform: rotate(-9deg); }
+  .hero-art .hill2 { position: absolute; left: 22%; bottom: -33%; width: 100%; height: 68%; border-radius: 50% 50% 0 0; background: #414b3e; transform: rotate(9deg); }
+  .hero-people { position: absolute; z-index: 2; width: min(88%, 390px); height: 88%; right: 3%; bottom: 5%; overflow: visible; filter: drop-shadow(0 8px 7px rgba(40, 37, 26, .12)); }
+  .hero-people .skin { fill: #d39a75; }
+  .hero-people .hair { fill: #473a30; }
+  .hero-people .cloth-a { fill: #e6c18a; }
+  .hero-people .cloth-b { fill: #b86e51; }
+  .hero-people .dark-cloth { fill: #384b3f; }
+  .hero-people .detail { fill: none; stroke: #f7e7c9; stroke-width: 5; stroke-linecap: round; opacity: .8; }
+  .hero-art .grain { position: absolute; inset: 0; opacity: .16; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
+  .hero-note { position: absolute; bottom: 17px; left: 17px; right: 17px; display: flex; align-items: end; justify-content: space-between; color: #fff7e6; z-index: 3; }
+  .hero-note small { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: .8; margin-bottom: 6px; }
+  .hero-note strong { font: 23px Georgia, serif; font-weight: 400; }
+  .hero-note span { font-size: 10px; border: 1px solid rgba(255,255,255,.6); border-radius: 999px; padding: 7px 9px; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 17px 0; margin: 0 0 34px; }
+  .stat { padding: 0 22px; border-right: 1px solid var(--line); }
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child { border-right: 0; }
+  .stat strong { display: block; font: 25px Georgia, serif; }
+  .stat small { color: var(--muted); font-size: 10px; display: block; margin-top: 5px; }
+  .section-head { display: flex; justify-content: space-between; align-items: end; gap: 15px; margin-bottom: 17px; }
+  .section-head h2 { font: 32px/1.1 Georgia, serif; font-weight: 400; letter-spacing: -.7px; margin: 0; }
+  .section-head p { color: var(--muted); margin: 7px 0 0; font-size: 11px; }
+  .text-link { color: var(--accent); background: none; border: 0; font-size: 11px; padding: 5px 0; font-weight: 750; }
+  .tools-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 18px 0 17px; }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { border: 1px solid var(--line); color: var(--muted); background: transparent; border-radius: 999px; padding: 8px 12px; font-size: 10px; white-space: nowrap; }
+  .chip.active { background: var(--surface-2); color: var(--ink); border-color: var(--surface-2); }
+  .search { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 9px 12px; width: 185px; font-size: 11px; outline: none; }
+  .search:focus, textarea:focus, input:focus { border-color: var(--accent); }
+  .photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .photo-card { min-width: 0; cursor: pointer; outline: none; }
+  .photo-card:hover .photo-frame { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .photo-card:focus-visible .photo-frame { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .photo-frame { aspect-ratio: 4 / 4.8; border-radius: 13px; overflow: hidden; position: relative; background: var(--surface-2); transition: .2s; }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-frame:after { content: ''; pointer-events: none; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(21,21,17,.42)); }
+  .photo-overlay { position: absolute; left: 12px; right: 12px; bottom: 12px; color: #fff8ea; z-index: 2; display: flex; align-items: end; justify-content: space-between; gap: 6px; }
+  .photo-overlay strong { display: block; font: 17px Georgia, serif; font-weight: 400; }
+  .photo-overlay small { font-size: 9px; opacity: .83; display: block; margin-top: 4px; }
+  .film-badge { border: 1px solid rgba(255,255,255,.7); border-radius: 999px; font-size: 8px; padding: 5px 6px; white-space: nowrap; }
+  .photo-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 2px 0; color: var(--muted); font-size: 10px; }
+  .photo-meta button { border: 0; background: transparent; color: var(--muted); padding: 1px 2px; }
+  .empty-state { grid-column: 1/-1; background: var(--surface); border: 1px dashed var(--line); border-radius: 16px; text-align: center; padding: 50px 20px; color: var(--muted); }
+  .page { display: none; animation: enter .25s ease; }
+  .page.active { display: block; }
+  @keyframes enter { from { opacity: .5; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  .editor-layout { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(280px,.8fr); gap: 22px; align-items: start; }
+  .editor-stage { background: var(--surface-2); border-radius: 18px; padding: 18px; min-height: 495px; display: grid; place-items: center; position: relative; }
+  .editor-stage:has(.editor-photo):after { content: ''; position: absolute; inset: 18px; z-index: 1; border-radius: 5px; pointer-events: none; opacity: var(--grain-overlay, .06); background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
+  .editor-photo { max-height: 600px; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 5px; box-shadow: 0 12px 34px rgba(0,0,0,.16); }
+  .editor-placeholder { width: 100%; min-height: 430px; display: grid; place-items: center; text-align: center; color: var(--muted); }
+  .editor-controls { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 21px; }
+  .editor-controls h3 { font: 25px Georgia, serif; font-weight: 400; margin: 0; }
+  .editor-controls>p { color: var(--muted); font-size: 11px; line-height: 1.65; margin: 8px 0 19px; }
+  .looks { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 22px; }
+  .look { background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 5px; color: var(--muted); font-size: 9px; }
+  .look.active { border-color: var(--accent); color: var(--ink); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .look:hover { border-color: var(--accent); color: var(--ink); }
+  .look-swatch { height: 56px; border-radius: 6px; display: block; margin-bottom: 7px; background: linear-gradient(145deg,#b7b28c,#d5a37f 55%,#5b6652); }
+  .look:nth-child(2) .look-swatch { background: linear-gradient(145deg,#d9c9a7,#e7b56a 45%,#9a674d); }
+  .look:nth-child(3) .look-swatch { background: linear-gradient(145deg,#c9c6be,#8f918a 55%,#383b37); }
+  .look:nth-child(4) .look-swatch { background: linear-gradient(145deg,#a9b9a0,#d4c9a1 45%,#687c69); }
+  .slider-row { margin: 15px 0 18px; }
+  .slider-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 9px; }
+  .slider-label span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .editor-actions { display: flex; gap: 8px; margin-top: 21px; }
+  .editor-actions .btn { flex: 1; }
+  .upload-zone { border: 1.5px dashed var(--line); border-radius: 15px; padding: 34px 20px; text-align: center; background: var(--surface); margin-top: 17px; }
+  .upload-zone.drag { border-color: var(--accent); background: var(--surface-2); }
+  .upload-zone .upload-glyph { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: var(--surface-2); margin: 0 auto 12px; font-size: 22px; }
+  .upload-zone strong { font: 19px Georgia, serif; font-weight: 400; }
+  .upload-zone p { font-size: 11px; color: var(--muted); margin: 7px 0 15px; }
+  .timeline { position: relative; margin-top: 26px; }
+  .timeline:before { content: ''; position: absolute; top: 8px; bottom: 0; left: 16px; border-left: 1px solid var(--line); }
+  .timeline-item { position: relative; display: grid; grid-template-columns: 34px 1fr; gap: 17px; padding-bottom: 27px; }
+  .timeline-dot { width: 33px; height: 33px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; font-size: 13px; z-index: 1; }
+  .timeline-content { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .timeline-header { padding: 15px 17px 10px; display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+  .timeline-header h3 { font: 22px Georgia, serif; font-weight: 400; margin: 0 0 5px; }
+  .timeline-header small { color: var(--muted); font-size: 10px; }
+  .timeline-photos { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; padding: 0 8px 8px; }
+  .timeline-photos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 7px; }
+  .story-layout { display: grid; grid-template-columns: minmax(240px,.8fr) minmax(0,1.2fr); gap: 24px; align-items: start; }
+  .story-preview-wrap { background: var(--surface-2); border-radius: 18px; padding: 20px; display: grid; place-items: center; }
+  .story-preview { width: min(100%, 310px); aspect-ratio: 9/16; border-radius: 8px; position: relative; overflow: hidden; background: linear-gradient(160deg,#e8b975,#637258 70%,#2f493c); color: #fff5e3; box-shadow: var(--shadow); }
+  .story-preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) sepia(.15); }
+  .story-preview:after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(25,25,20,.04),rgba(25,25,20,.05) 45%,rgba(25,25,20,.67)); }
+  .story-copy { position: absolute; z-index: 2; left: 20px; right: 20px; bottom: 27px; }
+  .story-copy .story-date { text-transform: uppercase; font-size: 9px; letter-spacing: 2px; opacity: .85; }
+  .story-copy h3 { font: 39px/.98 Georgia, serif; font-weight: 400; margin: 11px 0; letter-spacing: -1.4px; }
+  .story-copy p { font-size: 10px; opacity: .85; line-height: 1.5; margin: 0; }
+  .template-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 12px; }
+  .template { border: 1px solid var(--line); border-radius: 12px; padding: 7px; background: var(--surface); text-align: left; }
+  .template.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .template-art { height: 88px; border-radius: 7px; margin-bottom: 7px; position: relative; overflow: hidden; background: linear-gradient(145deg,#c9b99c,#e5c28d 45%,#596b4c); }
+  .template:nth-child(2) .template-art { background: #d8cfc1; }
+  .template:nth-child(3) .template-art { background: linear-gradient(145deg,#4d5042,#a57c56); }
+  .template-art:after { content: 'MỘT CUỘN'; position: absolute; bottom: 8px; left: 7px; font: 10px Georgia,serif; color: rgba(255,250,232,.9); letter-spacing: 1px; }
+  .template:nth-child(2) .template-art:after { color: #514f45; }
+  .template span { font-size: 10px; }
+  .field { display: grid; gap: 7px; margin: 16px 0; }
+  .field label { font-size: 11px; color: var(--muted); }
+  .field input, .field textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); padding: 11px 12px; font-size: 12px; outline: none; }
+  .field textarea { resize: vertical; min-height: 75px; }
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%,20px); opacity: 0; pointer-events: none; background: var(--ink); color: var(--paper); padding: 12px 17px; border-radius: 999px; font-size: 12px; box-shadow: var(--shadow); transition: .25s; z-index: 20; }
+  .toast.show { opacity: 1; transform: translate(-50%,0); }
+  .footer-note { color: var(--muted); font-size: 10px; margin-top: 36px; display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 16px; }
+  .mobile-menu { display: none; }
+  @media (max-width: 960px) {
+    .shell { grid-template-columns: 78px minmax(0,1fr); }
+    .sidebar { padding: 23px 12px; align-items: center; }
+    .brand { padding: 0; }
+    .brand-name-wrap, .nav-label, .nav button .nav-text, .mini-memory, .profile div:last-child { display: none; }
+    .nav { width: 100%; }
+    .nav button { justify-content: center; padding: 12px 5px; }
+    .nav-icon { width: auto; }
+    .profile { padding: 20px 0 0; }
+    .hero { grid-template-columns: minmax(0,1fr) minmax(220px,.8fr); }
+    .photo-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width: 650px) {
+    .shell { display: block; padding-bottom: 68px; }
+    .sidebar { position: fixed; z-index: 15; bottom: 0; left: 0; right: 0; height: 63px; padding: 5px 8px max(5px, env(safe-area-inset-bottom)); background: var(--surface); border-right: 0; border-top: 1px solid var(--line); display: block; }
+    .brand, .side-bottom { display: none; }
+    .nav-label { display: none; }
+    .nav { display: flex; height: 100%; justify-content: space-around; gap: 3px; }
+    .nav button { flex: 1; flex-direction: column; gap: 3px; padding: 5px 2px; border-radius: 9px; font-size: 9px; }
+    .nav button .nav-text { display: block; font-size: 9px; }
+    .nav-icon { font-size: 17px; }
+    main { padding: 20px 17px 35px; }
+    .topbar { margin-bottom: 23px; }
+    .date-stamp { font-size: 9px; }
+    .top-actions .icon-button { display: none; }
+    .top-actions .btn { padding: 0 12px; min-height: 36px; }
+    .hero { display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+    h1 { font-size: clamp(42px, 12vw, 60px); letter-spacing: -2.5px; margin: 15px 0 12px; }
+    .hero-copy p { font-size: 12px; }
+    .hero-art { min-height: 225px; }
+    .stats { margin-bottom: 27px; }
+    .stat { padding: 0 12px; }
+    .stat strong { font-size: 23px; }
+    .stat small { font-size: 9px; line-height: 1.35; }
+    .section-head h2 { font-size: 29px; }
+    .tools-row { align-items: start; flex-direction: column; }
+    .search { width: 100%; }
+    .photo-grid { gap: 11px; grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .photo-overlay strong { font-size: 15px; }
+    .film-badge { display: none; }
+    .photo-meta { font-size: 9px; }
+    .editor-layout, .story-layout { grid-template-columns: 1fr; }
+    .editor-stage { min-height: 340px; }
+    .editor-placeholder { min-height: 290px; }
+    .story-layout .story-preview-wrap { order: 0; }
+    .template-grid { grid-template-columns: repeat(3,1fr); }
+    .template-art { height: 64px; }
+    .footer-note { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-name-wrap"><div class="brand-name">một cuộn</div><div class="brand-tag">keep it, in film</div></div>
+      </div>
+      <div>
+        <div class="nav-label">Không gian của bạn</div>
+        <nav class="nav" aria-label="Điều hướng chính">
+          <button class="active" data-page="gallery"><span class="nav-icon">▦</span><span class="nav-text">Kho ảnh</span></button>
+          <button data-page="darkroom"><span class="nav-icon">◉</span><span class="nav-text">Phòng tối</span></button>
+          <button data-page="memories"><span class="nav-icon">↟</span><span class="nav-text">Ký ức</span></button>
+          <button data-page="stories"><span class="nav-icon">▤</span><span class="nav-text">Story Studio</span></button>
+        </nav>
+      </div>
+      <div class="side-bottom">
+        <div class="mini-memory"><div class="eyebrow">Một lời nhắc nhỏ</div><p>“Đừng chỉ chụp những ngày đặc biệt.”</p><button data-go="stories">Kể lại câu chuyện ↗</button></div>
+        <div class="profile"><div class="avatar">T</div><div><strong>Góc nhỏ của Tiến</strong><small>Free / Local workspace</small></div></div>
+      </div>
+    </aside>
+    <main>
+      <div class="topbar">
+        <div class="date-stamp" id="todayLabel">THỨ SÁU, 09 THÁNG 10</div>
+        <div class="top-actions"><button class="icon-button" id="themeBtn" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button><button class="btn primary" id="topUpload">＋ Thêm ảnh</button></div>
+      </div>
+
+      <section class="page active" id="page-gallery">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="kicker">Your life, in little frames</div>
+            <h1>Đời thường,<br>nhưng <em>đáng nhớ.</em></h1>
+            <p>Một nơi để chỉnh màu, gom những khoảnh khắc và kể lại câu chuyện của chính bạn — không cần ngày nào cũng phải thật đặc biệt.</p>
+            <div class="hero-buttons"><button class="btn primary" id="heroUpload">＋ Thêm ảnh đầu tiên</button><button class="btn" data-go="darkroom">Vào phòng tối ↗</button></div>
+          </div>
+          <div class="hero-art" aria-label="Minh họa hai người lưu giữ một khoảnh khắc ngoài trời"><div class="sun"></div><div class="hill1"></div><div class="hill2"></div><svg class="hero-people" viewBox="0 0 380 280" aria-hidden="true"><g stroke-linecap="round" stroke-linejoin="round"><path d="M49 246 Q85 207 126 231 L160 263 H45Z" class="dark-cloth"/><path d="M100 193 Q82 213 67 244" fill="none" stroke="#d39a75" stroke-width="17"/><path d="M101 170 Q126 158 147 180 L163 235 Q129 251 94 222Z" class="cloth-a"/><path d="M106 190 L143 215" class="detail"/><circle cx="112" cy="139" r="26" class="skin"/><path d="M86 139 Q82 104 112 108 Q141 106 139 137 L130 130 Q111 120 94 136 L91 151Z" class="hair"/><path d="M94 167 Q111 159 126 168" fill="none" stroke="#9a624d" stroke-width="3"/><path d="M117 204 Q139 211 154 197" fill="none" stroke="#d39a75" stroke-width="14"/><path d="M154 197 Q166 192 174 204" fill="none" stroke="#d39a75" stroke-width="12"/><path d="M183 251 Q218 225 265 244 L295 265 H180Z" class="cloth-a"/><path d="M210 184 Q234 164 257 187 L276 240 Q239 254 202 225Z" class="cloth-b"/><path d="M225 192 L252 218" class="detail"/><circle cx="232" cy="143" r="27" class="skin"/><path d="M205 144 Q199 107 229 108 Q261 109 260 143 L250 128 Q231 119 212 136 L211 151Z" class="hair"/><path d="M216 171 Q233 164 250 171" fill="none" stroke="#9a624d" stroke-width="3"/><path d="M211 202 Q186 212 170 204" fill="none" stroke="#d39a75" stroke-width="14"/><path d="M170 204 Q160 204 153 216" fill="none" stroke="#d39a75" stroke-width="12"/><path d="M149 236 Q178 226 202 239" fill="none" stroke="#384b3f" stroke-width="20"/><path d="M264 197 Q285 208 290 228" fill="none" stroke="#d39a75" stroke-width="13"/><rect x="151" y="217" width="33" height="25" rx="5" fill="#e6d4ae" transform="rotate(-8 151 217)"/><circle cx="166" cy="229" r="6" fill="#68755e"/></g></svg><div class="grain"></div><div class="hero-note"><div><small>Cuộn film của bạn · 2026</small><strong>Somewhere, slowly.</strong></div><span>Ảnh mẫu</span></div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong id="photoCount">06</strong><small>khoảnh khắc đã lưu</small></div>
+          <div class="stat"><strong id="memoryCount">03</strong><small>chương ký ức</small></div>
+          <div class="stat"><strong id="editedCount">04</strong><small>ảnh đã lên màu</small></div>
+        </div>
+        <div class="section-head"><div><h2>Những khung hình gần đây</h2><p>Mỗi tấm ảnh giữ lại một phiên bản của ngày hôm ấy.</p></div><button class="text-link" data-go="memories">Xem dòng thời gian ↗</button></div>
+        <div class="tools-row"><div class="filters" id="galleryFilters"><button class="chip active" data-filter="all">Tất cả</button><button class="chip" data-filter="edited">Đã lên màu</button><button class="chip" data-filter="unedit">Ảnh gốc</button><button class="chip" data-filter="favorite">Yêu thích ♡</button></div><input class="search" id="searchBox" placeholder="⌕  Tìm một khoảnh khắc..." aria-label="Tìm ảnh"></div>
+        <div class="photo-grid" id="photoGrid"></div>
+        <div class="upload-zone" id="dropZone"><div class="upload-glyph">＋</div><strong>Đưa thêm một ngày vào cuộn film</strong><p>Kéo ảnh vào đây hoặc chọn từ thiết bị của bạn. Ảnh được xử lý ngay trong trình duyệt của bạn.</p><button class="btn small" id="choosePhotos">Chọn ảnh từ thiết bị</button></div>
+        <div class="footer-note"><span>MỘT CUỘN © 2026</span><span>Giữ những điều nhỏ bé.</span></div>
+      </section>
+
+      <section class="page" id="page-darkroom">
+        <div class="section-head"><div><div class="kicker">The darkroom</div><h2>Phòng tối</h2><p>Chọn một màu film. Giữ lại cảm giác của khoảnh khắc.</p></div><button class="btn small" id="editorChoose">＋ Chọn ảnh</button></div>
+        <div class="editor-layout">
+          <div class="editor-stage" id="editorStage"><div class="editor-placeholder"><div><div style="font-size:36px;margin-bottom:12px">◉</div><strong style="font:24px Georgia,serif;color:var(--ink);font-weight:400">Chọn một khung hình</strong><p style="font-size:11px;max-width:240px;line-height:1.7">Tải ảnh của bạn lên hoặc chọn một tấm từ Kho ảnh để bắt đầu chỉnh màu.</p><button class="btn primary" id="editorEmptyChoose">Chọn ảnh</button></div></div></div>
+          <div class="editor-controls">
+            <h3>Chất màu của bạn</h3><p>Mỗi preset là một cảm giác khác nhau. Tinh chỉnh nhẹ để ảnh vẫn là của bạn.</p>
+            <div class="looks" id="lookChoices">
+              <button class="look active" data-look="portra"><span class="look-swatch"></span>Portra</button>
+              <button class="look" data-look="golden"><span class="look-swatch"></span>Golden</button>
+              <button class="look" data-look="mono"><span class="look-swatch"></span>Mono</button>
+              <button class="look" data-look="moss"><span class="look-swatch"></span>Moss</button>
+            </div>
+            <div class="slider-row"><div class="slider-label"><label for="warmth">Độ ấm</label><span id="warmthVal">+12</span></div><input type="range" min="-30" max="40" value="12" id="warmth"></div>
+            <div class="slider-row"><div class="slider-label"><label for="fade">Độ phai</label><span id="fadeVal">18</span></div><input type="range" min="0" max="45" value="18" id="fade"></div>
+            <div class="slider-row"><div class="slider-label"><label for="grain">Hạt film</label><span id="grainVal">22</span></div><input type="range" min="0" max="60" value="22" id="grain"></div>
+            <div class="slider-row"><div class="slider-label"><label for="contrast">Tương phản</label><span id="contrastVal">-5</span></div><input type="range" min="-25" max="25" value="-5" id="contrast"></div>
+            <div class="editor-actions"><button class="btn" id="resetEdit">Đặt lại</button><button class="btn primary" id="saveEdit">Lưu bản màu ↓</button></div>
+            <p style="margin:12px 0 0;font-size:10px">Ảnh gốc không bị ghi đè. Bản xuất được tạo ngay trên thiết bị.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-memories">
+        <div class="section-head"><div><div class="kicker">Collected chapters</div><h2>Dòng thời gian ký ức</h2><p>Gom những tấm ảnh theo nơi chốn, người thương và những ngày muốn giữ lại.</p></div><button class="btn primary small" id="newMemory">＋ Tạo chương</button></div>
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="page" id="page-stories">
+        <div class="section-head"><div><div class="kicker">A little story for your story</div><h2>Story Studio</h2><p>Chọn ảnh, viết một dòng chú thích và xuất khung hình dọc để chia sẻ.</p></div><button class="btn primary small" id="downloadStory">Xuất story ↓</button></div>
+        <div class="story-layout">
+          <div class="story-preview-wrap"><div class="story-preview" id="storyPreview"><img id="storyImage" alt="Ảnh story xem trước"><div class="story-copy"><div class="story-date" id="storyDate">A LITTLE MEMORY · 2026</div><h3 id="storyTitle">Some days<br>stay with us.</h3><p id="storyCaption">lưu lại những điều mình không muốn quên.</p></div></div></div>
+          <div>
+            <div class="editor-controls">
+              <h3>Chắp một câu chuyện</h3><p>Không cần thật nhiều chữ. Đôi khi một tấm ảnh và một dòng là đủ.</p>
+              <div class="field"><label for="storyPhotoSelect">Ảnh nền</label><select id="storyPhotoSelect" style="width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:11px 12px;font-size:12px"></select></div>
+              <div class="field"><label for="storyDateInput">Dòng nhỏ phía trên</label><input id="storyDateInput" value="A LITTLE MEMORY · 2026" maxlength="34"></div>
+              <div class="field"><label for="storyTitleInput">Tiêu đề</label><textarea id="storyTitleInput" maxlength="70">Some days stay with us.</textarea></div>
+              <div class="field"><label for="storyCaptionInput">Chú thích</label><input id="storyCaptionInput" value="lưu lại những điều mình không muốn quên." maxlength="100"></div>
+              <div class="field"><label>Chọn bố cục</label><div class="template-grid"><button class="template active" data-template="film"><div class="template-art"></div><span>Film diary</span></button><button class="template" data-template="clean"><div class="template-art"></div><span>Minimal</span></button><button class="template" data-template="night"><div class="template-art"></div><span>After hours</span></button></div></div>
+              <button class="btn primary" style="width:100%" id="refreshStory">Cập nhật bản xem trước ↗</button>
+            </div>
+            <p style="color:var(--muted);font-size:10px;line-height:1.7;margin-top:12px">Prototype hiện xuất một ảnh story PNG (tỉ lệ 9:16). Recap video nhiều ảnh có thể phát triển ở bước tiếp theo.</p>
+          </div>
+        </div>
+      </section>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+      <input type="file" id="singleFileInput" accept="image/*" hidden>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(() => {
+  const $ = (s, root=document) => root.querySelector(s);
+  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+  const svgData = (body, bg) => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="760" height="920" viewBox="0 0 760 920"><defs><linearGradient id="sky" x1="0" y1="0" x2=".1" y2="1"><stop stop-color="${bg[0]}"/><stop offset="1" stop-color="${bg[1]}"/></linearGradient><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values=".45 0 0 0 .25 .45 0 0 0 .2 .45 0 0 .1 .1 0 0 0 .13 0"/></filter></defs><rect width="760" height="920" fill="url(#sky)"/>${body}<rect width="760" height="920" filter="url(#grain)" opacity=".2"/><rect x="18" y="18" width="724" height="884" fill="none" stroke="#fff1d7" stroke-opacity=".25" stroke-width="2"/></svg>`;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  };
+  const samplePhotos = [
+    {id:'p1', title:'Nắng qua rèm', place:'Pleiku · Nhà', date:'08.10.2026', category:'everyday', edited:true, favorite:true, look:'portra', image:svgData('<circle cx="550" cy="230" r="96" fill="#f4d59a" opacity=".9"/><path d="M0 510 Q185 370 370 520 T760 475 V920 H0Z" fill="#7b8164"/><path d="M0 650 Q210 515 390 680 T760 610 V920 H0Z" fill="#424b3b"/><path d="M140 0 L280 0 500 700 340 700Z" fill="#f5dfb2" opacity=".12"/>',['#d8ba94','#6e7965'])},
+    {id:'p2', title:'Một bàn cà phê', place:'Sài Gòn · 03', date:'02.10.2026', category:'friends', edited:true, favorite:false, look:'golden', image:svgData('<rect x="80" y="205" width="600" height="490" rx="8" fill="#d8b993"/><rect x="120" y="250" width="520" height="365" fill="#a7a28a"/><path d="M120 500 L640 325 V615 H120Z" fill="#687a67"/><ellipse cx="388" cy="658" rx="220" ry="42" fill="#4f4639"/><path d="M275 450 Q380 410 490 452 L455 610 Q386 635 310 605Z" fill="#f0e2c4"/><ellipse cx="380" cy="449" rx="105" ry="28" fill="#8c5f45"/><ellipse cx="380" cy="448" rx="76" ry="17" fill="#442f26"/><path d="M483 490 Q575 470 554 550 Q540 575 466 553" fill="none" stroke="#f0e2c4" stroke-width="22"/>',['#b8aa87','#917d60'])},
+    {id:'p3', title:'Đi qua mùa xanh', place:'Mộc Châu · Trip', date:'21.09.2026', category:'travel', edited:true, favorite:true, look:'moss', image:svgData('<circle cx="180" cy="190" r="70" fill="#f1ddaa"/><path d="M0 430 L190 180 390 435 540 230 760 465 V920 H0Z" fill="#71816b"/><path d="M0 560 L200 400 370 590 570 420 760 570 V920 H0Z" fill="#465845"/><path d="M0 750 Q220 665 380 755 T760 720 V920 H0Z" fill="#c1b48c"/><path d="M370 920 Q410 790 460 710" fill="none" stroke="#d7caa4" stroke-width="35"/>',['#bdc6a0','#78896a'])},
+    {id:'p4', title:'Ngày không vội', place:'Ở nhà · Sunday', date:'13.09.2026', category:'everyday', edited:false, favorite:false, look:'portra', image:svgData('<rect x="90" y="120" width="580" height="680" fill="#e6d5b9"/><rect x="140" y="170" width="480" height="580" fill="#8e9a83"/><path d="M140 170 L350 170 620 450 620 750 140 750Z" fill="#cad0b4"/><path d="M150 180 L430 180 430 740 150 740Z" fill="#f4e4c6"/><path d="M220 180 L260 180 260 740 220 740Z" fill="#c2ae87"/><path d="M145 565 Q340 480 620 620 V750 H145Z" fill="#6e7b61"/><rect x="435" y="570" width="95" height="140" rx="6" fill="#a96e4b"/><ellipse cx="480" cy="565" rx="55" ry="16" fill="#d8a87a"/>',['#e8d8bb','#84917b'])},
+    {id:'p5', title:'Đêm thành phố', place:'Sài Gòn · Late', date:'05.09.2026', category:'friends', edited:true, favorite:false, look:'mono', image:svgData('<rect width="760" height="580" fill="#626e68"/><circle cx="560" cy="170" r="82" fill="#d9c9a8"/><path d="M0 560 L90 560 90 340 180 340 180 470 270 470 270 270 370 270 370 470 470 470 470 360 580 360 580 500 680 500 680 310 760 310 V920 H0Z" fill="#333e39"/><path d="M0 745 H760" stroke="#c6b58f" stroke-width="6" opacity=".5"/><g fill="#dfbf85"><rect x="111" y="385" width="18" height="28"/><rect x="211" y="390" width="18" height="28"/><rect x="301" y="315" width="20" height="28"/><rect x="520" y="405" width="20" height="25"/><rect x="710" y="355" width="16" height="26"/></g><path d="M0 840 Q170 795 340 840 T760 830" stroke="#dfbf85" stroke-width="14" fill="none" opacity=".45"/>',['#7f8b80','#363f3a'])},
+    {id:'p6', title:'Những người thương', place:'Cuối tuần · Us', date:'30.08.2026', category:'friends', edited:false, favorite:true, look:'golden', image:svgData('<rect x="80" y="100" width="600" height="740" rx="4" fill="#d8c3a4"/><circle cx="280" cy="330" r="88" fill="#be8967"/><path d="M180 440 Q280 385 370 445 L430 720 H130Z" fill="#697b67"/><circle cx="490" cy="355" r="85" fill="#d1a17a"/><path d="M395 460 Q495 410 585 470 L640 720 H345Z" fill="#b46c51"/><path d="M180 650 Q360 580 570 660 V840 H180Z" fill="#f0dfbe"/><g stroke="#f1dfb9" stroke-width="13" stroke-linecap="round"><path d="M365 560 Q385 600 420 590" fill="none"/><path d="M300 565 Q335 600 370 575" fill="none"/></g>',['#d4b89a','#bc9473'])}
+  ];
+  let photos = [...samplePhotos];
+  let currentPhotoId = 'p1';
+  let activeFilter = 'all';
+  let activeLook = 'portra';
+  let toastTimer;
+  const filters = {
+    portra: {css:'sepia(.19) saturate(.86) contrast(.94) brightness(1.04)',warm:12,fade:18,grain:22,contrast:-5, tint:'#e8b98a'},
+    golden: {css:'sepia(.3) saturate(1.18) contrast(.98) brightness(1.05)',warm:28,fade:13,grain:30,contrast:0,tint:'#edae69'},
+    mono: {css:'grayscale(1) contrast(1.12) brightness(.98)',warm:-15,fade:8,grain:28,contrast:12,tint:'#aaa89f'},
+    moss: {css:'sepia(.16) hue-rotate(20deg) saturate(.78) contrast(.92) brightness(1.02)',warm:4,fade:24,grain:26,contrast:-9,tint:'#9ca780'}
+  };
+  function notify(msg) { const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600); }
+  function formatCount(n){return String(n).padStart(2,'0')}
+  function photoById(id){return photos.find(p=>p.id===id)}
+  function go(page){
+    $$('.page').forEach(p=>p.classList.toggle('active',p.id===`page-${page}`));
+    $$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+    if(page==='darkroom') renderEditor();
+    if(page==='memories') renderTimeline();
+    if(page==='stories') refreshStorySelect();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  $$('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+  $$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+  function renderStats(){
+    $('#photoCount').textContent=formatCount(photos.length);
+    const groups=new Set(photos.map(p=>p.category)); $('#memoryCount').textContent=formatCount(Math.max(3,groups.size));
+    $('#editedCount').textContent=formatCount(photos.filter(p=>p.edited).length);
+  }
+  function renderGallery(){
+    const query=$('#searchBox').value.trim().toLowerCase();
+    const shown=photos.filter(p=>{
+      const matches=activeFilter==='all'||(activeFilter==='edited'&&p.edited)||(activeFilter==='unedit'&&!p.edited)||(activeFilter==='favorite'&&p.favorite);
+      const text=[p.title,p.place,p.date].join(' ').toLowerCase().includes(query);
+      return matches&&text;
+    });
+    $('#photoGrid').innerHTML=shown.length?shown.map(p=>`<article class="photo-card" tabindex="0" role="button" aria-label="Mở ${esc(p.title)}" data-photo="${p.id}"><div class="photo-frame"><img src="${p.image}" alt="${esc(p.title)}" style="${p.edited?getPreviewStyle(p):''}"><div class="photo-overlay"><div><strong>${esc(p.title)}</strong><small>${esc(p.place)}</small></div><span class="film-badge">${p.edited?(p.look||'portra').toUpperCase():'ORIGINAL'}</span></div></div><div class="photo-meta"><span>${esc(p.date)}</span><button data-favorite="${p.id}" title="Yêu thích" aria-label="Yêu thích ${esc(p.title)}">${p.favorite?'♥':'♡'}</button></div></article>`).join(''):`<div class="empty-state"><div style="font-size:28px;margin-bottom:10px">⌕</div>Chưa tìm thấy khung hình này.<br><span style="font-size:10px">Thử từ khóa khác hoặc thêm ảnh mới nhé.</span></div>`;
+    $$('.photo-card').forEach(card=>{
+      const open=()=>{currentPhotoId=card.dataset.photo; go('darkroom');};
+      card.addEventListener('click',e=>{if(e.target.closest('[data-favorite]'))return;open()});
+      card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+    });
+    $$('[data-favorite]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const p=photoById(b.dataset.favorite);p.favorite=!p.favorite;renderGallery();notify(p.favorite?'Đã thêm vào Yêu thích ♡':'Đã bỏ khỏi Yêu thích');}));
+    renderStats();
+  }
+  function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function getPreviewStyle(p){const key=p.look||'portra';return `filter:${(filters[key]||filters.portra).css};`}
+  $$('#galleryFilters .chip').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;$$('#galleryFilters .chip').forEach(c=>c.classList.toggle('active',c===b));renderGallery()}));
+  $('#searchBox').addEventListener('input',renderGallery);
+  const fileInput=$('#fileInput'), singleInput=$('#singleFileInput');
+  function chooseFiles(single=false){(single?singleInput:fileInput).click()}
+  $('#topUpload').addEventListener('click',()=>chooseFiles());$('#heroUpload').addEventListener('click',()=>chooseFiles());$('#choosePhotos').addEventListener('click',()=>chooseFiles());$('#editorChoose').addEventListener('click',()=>chooseFiles(true));$('#editorEmptyChoose').addEventListener('click',()=>chooseFiles(true));
+  function loadFiles(files){
+    const valid=[...files].filter(f=>f.type.startsWith('image/'));
+    if(!valid.length){notify('Hãy chọn file ảnh nhé.');return;}
+    valid.forEach((file,i)=>{
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const id='up_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+        const p={id,title:file.name.replace(/\.[^.]+$/,'').slice(0,30)||'Một khoảnh khắc',place:'Ảnh của bạn',date:new Date().toLocaleDateString('vi-VN'),category:'everyday',edited:false,favorite:false,look:'portra',image:reader.result,uploaded:true};
+        photos.unshift(p); if(i===0){currentPhotoId=id;}
+        renderGallery();refreshStorySelect();
+        if(i===valid.length-1)notify(`Đã thêm ${valid.length} ảnh vào cuộn film.`);
+        if(i===0&&$('#page-darkroom').classList.contains('active'))renderEditor();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  fileInput.addEventListener('change',()=>{loadFiles(fileInput.files);fileInput.value=''});
+  singleInput.addEventListener('change',()=>{loadFiles(singleInput.files);singleInput.value=''});
+  const drop=$('#dropZone');
+  ['dragenter','dragover'].forEach(evt=>drop.addEventListener(evt,e=>{e.preventDefault();drop.classList.add('drag')}));
+  ['dragleave','drop'].forEach(evt=>drop.addEventListener(evt,e=>{e.preventDefault();drop.classList.remove('drag')}));
+  drop.addEventListener('drop',e=>loadFiles(e.dataTransfer.files));
+  let editSettings={...filters.portra};
+  function selectedPhoto(){return photoById(currentPhotoId)||photos[0]}
+  function renderEditor(){
+    const p=selectedPhoto();
+    const stage=$('#editorStage');
+    if(!p){stage.innerHTML='<div class="editor-placeholder">Hãy tải ảnh lên để bắt đầu.</div>';return;}
+    stage.innerHTML=`<img id="editorPhoto" class="editor-photo" src="${p.image}" alt="Ảnh đang chỉnh" style="filter:${editSettings.css}">`;
+    activeLook=p.look||'portra';
+    $$('#lookChoices .look').forEach(b=>b.classList.toggle('active',b.dataset.look===activeLook));
+    ['warmth','fade','grain','contrast'].forEach(key=>{const v=p.editValues?.[key]??filters[activeLook][key];$('#'+key).value=v;$('#'+key+'Val').textContent=(key==='warmth'&&v>0?'+':'')+v;});
+    editSettings={...filters[activeLook]}; updateEditorPreview();
+  }
+  function updateEditorPreview(){
+    const warmth=Number($('#warmth').value),fade=Number($('#fade').value),grain=Number($('#grain').value),contrast=Number($('#contrast').value);
+    const p=selectedPhoto();
+    const bright=1+fade/190;
+    let css;
+    if(activeLook==='mono') css=`grayscale(1) contrast(${1.12+contrast/120}) brightness(${bright})`;
+    else if(activeLook==='golden') css=`sepia(${.3+warmth/180}) saturate(${1.18+warmth/140}) contrast(${.98+contrast/120}) brightness(${bright})`;
+    else if(activeLook==='moss') css=`sepia(.16) hue-rotate(${20+warmth/3}deg) saturate(${.78+warmth/130}) contrast(${.92+contrast/120}) brightness(${bright})`;
+    else css=`sepia(${Math.max(0,.19+warmth/180)}) saturate(${Math.max(.4,.86+warmth/150)}) contrast(${.94+contrast/120}) brightness(${bright})`;
+    const img=$('#editorPhoto');if(img)img.style.filter=css;
+    $('#editorStage').style.setProperty('--grain-overlay', Math.min(.22, grain / 280));
+    $('#warmthVal').textContent=(warmth>0?'+':'')+warmth;$('#fadeVal').textContent=fade;$('#grainVal').textContent=grain;$('#contrastVal').textContent=(contrast>0?'+':'')+contrast;
+    editSettings={css,warmth,fade,grain,contrast,tint:filters[activeLook].tint};
+  }
+  ['warmth','fade','grain','contrast'].forEach(k=>$('#'+k).addEventListener('input',updateEditorPreview));
+  $$('#lookChoices .look').forEach(b=>b.addEventListener('click',()=>{activeLook=b.dataset.look;const f=filters[activeLook];['warmth','fade','grain','contrast'].forEach(k=>$('#'+k).value=f[k]);$$('#lookChoices .look').forEach(c=>c.classList.toggle('active',c===b));updateEditorPreview()}));
+  $('#resetEdit').addEventListener('click',()=>{activeLook='portra';const f=filters.portra;['warmth','fade','grain','contrast'].forEach(k=>$('#'+k).value=f[k]);$$('#lookChoices .look').forEach(c=>c.classList.toggle('active',c.dataset.look===activeLook));updateEditorPreview();notify('Đã đặt lại thông số màu.');});
+  async function imageFromSrc(src){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=src;});}
+  function renderGrain(ctx,w,h,amount){if(amount<=0)return;const count=Math.floor(w*h*amount/2200);ctx.save();ctx.globalAlpha=Math.min(.12,amount/450);for(let i=0;i<count;i++){const x=Math.random()*w,y=Math.random()*h,sz=Math.random()*1.5+.25;ctx.fillStyle=Math.random()>.5?'#fff3d4':'#30271f';ctx.fillRect(x,y,sz,sz)}ctx.restore()}
+  async function exportPhoto(p,settings){
+    try{
+      const img=await imageFromSrc(p.image);const max=2400;const scale=Math.min(1,max/Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height));const w=Math.round((img.naturalWidth||img.width)*scale),h=Math.round((img.naturalHeight||img.height)*scale);
+      const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');
+      ctx.filter=settings.css||'none';ctx.drawImage(img,0,0,w,h);ctx.filter='none';
+      if(settings.fade>0){ctx.globalAlpha=settings.fade/100;ctx.fillStyle='#ead8b6';ctx.fillRect(0,0,w,h);ctx.globalAlpha=1;}
+      if(settings.warmth!==0){ctx.globalAlpha=Math.min(.18,Math.abs(settings.warmth)/240);ctx.fillStyle=settings.warmth>0?'#e7a56e':'#88a9bd';ctx.fillRect(0,0,w,h);ctx.globalAlpha=1;}
+      renderGrain(ctx,w,h,settings.grain||0);
+      const a=document.createElement('a');a.download=(p.title||'mot-cuon').replace(/[^a-z0-9\p{L}-]+/giu,'-')+'-film.png';a.href=c.toDataURL('image/png');a.click();
+      return true;
+    }catch(e){notify('Không xuất được ảnh này. Thử chọn lại file ảnh nhé.');return false;}
+  }
+  $('#saveEdit').addEventListener('click',async()=>{
+    const p=selectedPhoto();if(!p){notify('Hãy chọn ảnh trước nhé.');return;}
+    p.look=activeLook;p.editValues={warmth:Number($('#warmth').value),fade:Number($('#fade').value),grain:Number($('#grain').value),contrast:Number($('#contrast').value)};p.edited=true;
+    const ok=await exportPhoto(p,editSettings);renderGallery();if(ok)notify('Đã xuất bản màu. Ảnh gốc vẫn được giữ nguyên.');
+  });
+  function renderTimeline(){
+    const labels=[{key:'travel',title:'Những nơi mình đã đi',date:'THÁNG 9 · 2026',emoji:'↟'},{key:'friends',title:'Có nhau trong những ngày thường',date:'THÁNG 8–10 · 2026',emoji:'♡'},{key:'everyday',title:'Những ngày rất đỗi bình thường',date:'THÁNG 9–10 · 2026',emoji:'☼'}];
+    $('#timeline').innerHTML=labels.map(g=>{const list=photos.filter(p=>p.category===g.key).slice(0,4);return `<div class="timeline-item"><div class="timeline-dot">${g.emoji}</div><div class="timeline-content"><div class="timeline-header"><div><h3>${g.title}</h3><small>${g.date} · ${list.length} KHUNG HÌNH</small></div><button class="text-link" data-timeline-filter="${g.key}">Mở chương ↗</button></div><div class="timeline-photos">${(list.length?list:photos.slice(0,Math.min(4,photos.length))).map(p=>`<img src="${p.image}" alt="${esc(p.title)}" title="${esc(p.title)}" data-open-photo="${p.id}">`).join('')}</div></div></div>`}).join('');
+    $$('[data-open-photo]').forEach(img=>img.addEventListener('click',()=>{currentPhotoId=img.dataset.openPhoto;go('darkroom')}));
+    $$('[data-timeline-filter]').forEach(b=>b.addEventListener('click',()=>{activeFilter='all';$('#searchBox').value='';go('gallery');$('#searchBox').value='';renderGallery();notify('Mở Kho ảnh để xem các khung hình.')}));
+  }
+  $('#newMemory').addEventListener('click',()=>notify('Bản MVP đang gom ảnh tự động theo nhóm. Tạo chương tùy chỉnh sẽ có ở phiên bản tiếp theo.'));
+  function refreshStorySelect(){
+    const s=$('#storyPhotoSelect'),previous=s.value;
+    s.innerHTML=photos.map(p=>`<option value="${p.id}">${esc(p.title)} · ${esc(p.place)}</option>`).join('');
+    if(photos.some(p=>p.id===previous))s.value=previous; else s.value=selectedPhoto()?.id||photos[0]?.id||'';
+    updateStoryPreview();
+  }
+  let activeTemplate='film';
+  function updateStoryPreview(){
+    const p=photoById($('#storyPhotoSelect').value)||selectedPhoto();
+    const img=$('#storyImage'); if(p){img.src=p.image;img.style.filter=getPreviewStyle(p);} else img.style.display='none';
+    const title=$('#storyTitleInput').value||'Một ngày đáng nhớ';$('#storyTitle').innerHTML=esc(title).replace(/\n/g,'<br>');
+    $('#storyCaption').textContent=$('#storyCaptionInput').value;
+    $('#storyDate').textContent=$('#storyDateInput').value;
+    const preview=$('#storyPreview');preview.style.background=activeTemplate==='night'?'linear-gradient(160deg,#4b4d40,#9a795b 65%,#202b25)':activeTemplate==='clean'?'#dbd2c3':'linear-gradient(160deg,#e8b975,#637258 70%,#2f493c)';
+    preview.querySelector('.story-copy').style.textAlign=activeTemplate==='clean'?'center':'left';
+    preview.querySelector('.story-copy').style.bottom=activeTemplate==='clean'?'42px':'27px';
+    $('#storyImage').style.opacity=activeTemplate==='clean'?'.65':'1';
+  }
+  ['storyPhotoSelect','storyDateInput','storyTitleInput','storyCaptionInput'].forEach(id=>$('#'+id).addEventListener('input',updateStoryPreview));
+  $$('.template').forEach(b=>b.addEventListener('click',()=>{activeTemplate=b.dataset.template;$$('.template').forEach(x=>x.classList.toggle('active',x===b));updateStoryPreview()}));
+  $('#refreshStory').addEventListener('click',()=>{updateStoryPreview();notify('Đã cập nhật bản xem trước story.');});
+  async function exportStory(){
+    const p=photoById($('#storyPhotoSelect').value)||selectedPhoto();if(!p){notify('Hãy thêm ảnh trước nhé.');return;}
+    const w=1080,h=1920,c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');
+    const palettes={film:['#dbb47b','#697b5e','#2d4034'],clean:['#ddd4c5','#c7bcaa','#b2a18b'],night:['#484b40','#927252','#202a24']};const pal=palettes[activeTemplate];const grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,pal[0]);grad.addColorStop(.55,pal[1]);grad.addColorStop(1,pal[2]);ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+    try{const img=await imageFromSrc(p.image);const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;const scale=Math.max(w/iw,h/ih);const dw=iw*scale,dh=ih*scale;ctx.save();ctx.filter=getPreviewStyle(p).replace('filter:','');ctx.globalAlpha=activeTemplate==='clean'?.75:1;ctx.drawImage(img,(w-dw)/2,(h-dh)/2,dw,dh);ctx.restore();}catch(e){}
+    const shade=ctx.createLinearGradient(0,h*.38,0,h);shade.addColorStop(0,'rgba(24,28,22,0)');shade.addColorStop(1,activeTemplate==='clean'?'rgba(39,38,31,.64)':'rgba(24,28,22,.78)');ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);
+    const pad=105;ctx.textAlign=activeTemplate==='clean'?'center':'left';const x=activeTemplate==='clean'?w/2:pad;
+    ctx.fillStyle='#fff6e5';ctx.globalAlpha=.85;ctx.font='500 26px Arial';ctx.letterSpacing='5px';ctx.fillText($('#storyDateInput').value.toUpperCase(),x,h-500);ctx.globalAlpha=1;
+    ctx.font='normal 96px Georgia';const lines=($('#storyTitleInput').value||'Một ngày đáng nhớ').split('\n');let ty=h-390;for(const line of lines.slice(0,3)){ctx.fillText(line,x,ty,activeTemplate==='clean'?850:880);ty+=105;}
+    ctx.globalAlpha=.86;ctx.font='28px Arial';ctx.letterSpacing='0px';ctx.fillText($('#storyCaptionInput').value,x,ty+26,activeTemplate==='clean'?820:850);ctx.globalAlpha=1;
+    ctx.strokeStyle='rgba(255,247,225,.4)';ctx.lineWidth=2;ctx.strokeRect(34,34,w-68,h-68);
+    const a=document.createElement('a');a.download='mot-cuon-story.png';a.href=c.toDataURL('image/png');a.click();notify('Đã xuất story PNG · 1080 × 1920.');
+  }
+  $('#downloadStory').addEventListener('click',exportStory);
+  $('#themeBtn').addEventListener('click',()=>{document.documentElement.classList.toggle('force-dark');if(document.documentElement.classList.contains('force-dark')){document.documentElement.style.colorScheme='dark';}else{document.documentElement.style.colorScheme='light';}notify('Đã đổi giao diện xem trước.');});
+  const date=new Date();$('#todayLabel').textContent=new Intl.DateTimeFormat('vi-VN',{weekday:'long',day:'2-digit',month:'long'}).format(date).toLocaleUpperCase('vi-VN');
+  renderGallery();refreshStorySelect();renderTimeline();
+})();
+</script>
+</body>
+</html>
